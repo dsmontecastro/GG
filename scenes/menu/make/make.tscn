@@ -1,0 +1,220 @@
+[gd_scene load_steps=4 format=3 uid="uid://i1xfe0vewwjo"]
+
+[ext_resource type="Script" path="res://scenes/menu/make/make.gd" id="1_tg6kx"]
+
+[sub_resource type="Theme" id="Theme_fke6b"]
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0.104713, 0.104713, 0.119141, 1)
+
+[node name="Make" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_tg6kx")
+
+[node name="Panel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(420, 500)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = SubResource("Theme_fke6b")
+
+[node name="HBox" type="HBoxContainer" parent="Panel"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Left" type="BoxContainer" parent="Panel/HBox"]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Panel/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Top" type="BoxContainer" parent="Panel/HBox/VBox"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="Hosting" type="HBoxContainer" parent="Panel/HBox/VBox"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 15
+
+[node name="HostName" type="LineEdit" parent="Panel/HBox/VBox/Hosting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../HostButt")
+focus_neighbor_top = NodePath("../../Cancel")
+focus_neighbor_right = NodePath("../HostType")
+focus_neighbor_bottom = NodePath("../../Finding/Search/FindName")
+focus_next = NodePath("../HostType")
+focus_previous = NodePath("../../Cancel")
+placeholder_text = "Input Room Name..."
+max_length = 20
+clear_button_enabled = true
+
+[node name="HostType" type="OptionButton" parent="Panel/HBox/VBox/Hosting"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+focus_neighbor_left = NodePath("../HostName")
+focus_neighbor_top = NodePath("../../Cancel")
+focus_neighbor_right = NodePath("../HostButt")
+focus_neighbor_bottom = NodePath("../../Finding/Search/FindName")
+focus_next = NodePath("../HostButt")
+focus_previous = NodePath("../HostName")
+icon_alignment = 1
+selected = 0
+fit_to_longest_item = false
+
+[node name="HostButt" type="Button" parent="Panel/HBox/VBox/Hosting"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../HostType")
+focus_neighbor_top = NodePath("../../Cancel")
+focus_neighbor_right = NodePath("../HostName")
+focus_neighbor_bottom = NodePath("../../Finding/Search/FindButt")
+focus_next = NodePath("../../Finding/Search/FindName")
+focus_previous = NodePath("../HostType")
+text = "Host"
+
+[node name="SpacerLine" type="HSeparator" parent="Panel/HBox/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_constants/separation = 15
+
+[node name="Finding" type="VBoxContainer" parent="Panel/HBox/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="Search" type="HBoxContainer" parent="Panel/HBox/VBox/Finding"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 15
+
+[node name="FindName" type="LineEdit" parent="Panel/HBox/VBox/Finding/Search"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../FindButt")
+focus_neighbor_top = NodePath("../../../Hosting/HostName")
+focus_neighbor_right = NodePath("../FindButt")
+focus_neighbor_bottom = NodePath("../../../Cancel")
+focus_next = NodePath("../FindButt")
+focus_previous = NodePath("../../../Cancel")
+placeholder_text = "Search for Room Name..."
+max_length = 20
+clear_button_enabled = true
+
+[node name="FindButt" type="Button" parent="Panel/HBox/VBox/Finding/Search"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_left = NodePath("../FindName")
+focus_neighbor_top = NodePath("../../../Hosting/HostButt")
+focus_neighbor_right = NodePath("../FindName")
+focus_neighbor_bottom = NodePath("../../../Cancel")
+focus_next = NodePath("../../../Cancel")
+focus_previous = NodePath("../FindName")
+text = "Find"
+
+[node name="Panel" type="Panel" parent="Panel/HBox/VBox/Finding"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Scroll" type="ScrollContainer" parent="Panel/HBox/VBox/Finding/Panel"]
+layout_mode = 2
+offset_left = 382.0
+offset_top = 308.0
+offset_right = 382.0
+offset_bottom = 308.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="Lobbies" type="VBoxContainer" parent="Panel/HBox/VBox/Finding/Panel/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 1
+
+[node name="Header" type="PanelContainer" parent="Panel/HBox/VBox/Finding/Panel"]
+layout_mode = 2
+offset_right = 382.0
+offset_bottom = 23.0
+
+[node name="HBox" type="HBoxContainer" parent="Panel/HBox/VBox/Finding/Panel/Header"]
+layout_mode = 2
+
+[node name="Left" type="BoxContainer" parent="Panel/HBox/VBox/Finding/Panel/Header/HBox"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="Lobby" type="Label" parent="Panel/HBox/VBox/Finding/Panel/Header/HBox"]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_styles/normal = SubResource("1")
+text = "Lobby Name"
+
+[node name="Mid" type="BoxContainer" parent="Panel/HBox/VBox/Finding/Panel/Header/HBox"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+
+[node name="Owner" type="Label" parent="Panel/HBox/VBox/Finding/Panel/Header/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("1")
+text = "Owner"
+
+[node name="Divider" type="VSeparator" parent="Panel/HBox/VBox/Finding/Panel"]
+modulate = Color(0.619608, 0.619608, 0.619608, 1)
+layout_mode = 2
+offset_right = 382.0
+offset_bottom = 308.0
+
+[node name="Mid" type="BoxContainer" parent="Panel/HBox/VBox"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="Cancel" type="Button" parent="Panel/HBox/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 7
+size_flags_vertical = 0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../Finding/Search/FindButt")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../Hosting/HostName")
+focus_next = NodePath("../Hosting/HostName")
+focus_previous = NodePath("../Finding/Search/FindButt")
+text = "Cancel"
+
+[node name="Bot" type="BoxContainer" parent="Panel/HBox/VBox"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="Right" type="BoxContainer" parent="Panel/HBox"]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+
+[connection signal="pressed" from="Panel/HBox/VBox/Hosting/HostButt" to="." method="host_room"]
+[connection signal="pressed" from="Panel/HBox/VBox/Finding/Search/FindButt" to="." method="find_rooms"]
+[connection signal="pressed" from="Panel/HBox/VBox/Cancel" to="." method="_reset"]

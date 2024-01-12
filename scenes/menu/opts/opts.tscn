@@ -1,0 +1,103 @@
+[gd_scene load_steps=2 format=3 uid="uid://bm3ihe3wo2pu"]
+
+[ext_resource type="Script" path="res://scenes/menu/opts/opts.gd" id="1"]
+
+[node name="menuOpts" type="MarginContainer"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+script = ExtResource("1")
+metadata/_edit_lock_ = true
+
+[node name="Margin" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Settings" type="PanelContainer" parent="Margin"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="VBox" type="VBoxContainer" parent="Margin/Settings"]
+layout_mode = 2
+
+[node name="Top" type="BoxContainer" parent="Margin/Settings/VBox"]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="Options" type="VBoxContainer" parent="Margin/Settings/VBox"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 5
+theme_override_constants/separation = 10
+
+[node name="optFullScreen" type="CheckBox" parent="Margin/Settings/VBox/Options"]
+layout_mode = 2
+text = "Full Screen"
+
+[node name="1" type="BoxContainer" parent="Margin/Settings/VBox/Options"]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="opt1" type="CheckBox" parent="Margin/Settings/VBox/Options"]
+layout_mode = 2
+text = "Full Screen"
+
+[node name="2" type="BoxContainer" parent="Margin/Settings/VBox/Options"]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="opt2" type="CheckBox" parent="Margin/Settings/VBox/Options"]
+layout_mode = 2
+text = "Full Screen"
+
+[node name="Mid" type="BoxContainer" parent="Margin/Settings/VBox"]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Margin/Settings/VBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_constants/separation = 30
+
+[node name="edgeLeft" type="VSeparator" parent="Margin/Settings/VBox/Buttons"]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="Cancel" type="Button" parent="Margin/Settings/VBox/Buttons" groups=["returnOpts"]]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Cancel"
+
+[node name="Apply" type="Button" parent="Margin/Settings/VBox/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 7
+size_flags_vertical = 0
+text = "Apply"
+
+[node name="Save" type="Button" parent="Margin/Settings/VBox/Buttons" groups=["returnOpts"]]
+layout_mode = 2
+size_flags_horizontal = 7
+size_flags_vertical = 0
+text = "Save"
+
+[node name="edgeRight" type="VSeparator" parent="Margin/Settings/VBox/Buttons"]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="Bot" type="BoxContainer" parent="Margin/Settings/VBox"]
+modulate = Color(1, 1, 1, 0)
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2

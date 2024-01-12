@@ -1,0 +1,80 @@
+[gd_scene load_steps=7 format=3 uid="uid://cy5082he7vpp8"]
+
+[sub_resource type="GDScript" id="GDScript_rkqk2"]
+script/source = "extends MarginContainer
+
+var id = -1
+const LIM = 15
+const TAG = LOBBY.TAG
+
+
+func set_id(val: int): id = val
+
+func set_host(val: String): $Host.text = trim(val) + \"    \"
+
+func set_lobby(val: String):
+	if val: val = val.replace(TAG, \"\")
+	$Lobby.text = \"  \" + trim(val)
+
+
+func trim(val: String) -> String:
+	if len(val) > LIM:
+		val = val.substr(0, LIM-3) + \"...\"
+	return val
+
+
+func _on_pressed(): LOBBY.join_lobby(id)
+"
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="3"]
+bg_color = Color(1, 1, 1, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="5"]
+bg_color = Color(0.129412, 0.129412, 0.129412, 1)
+
+[sub_resource type="StyleBoxFlat" id="4"]
+bg_color = Color(1, 1, 1, 0.392157)
+
+[node name="LobbyButton" type="MarginContainer"]
+custom_minimum_size = Vector2(390, 27.5)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -633.0
+offset_bottom = -573.0
+size_flags_horizontal = 3
+script = SubResource("GDScript_rkqk2")
+
+[node name="Lobby" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
+theme_override_styles/normal = SubResource("1")
+theme_override_styles/hover = SubResource("2")
+theme_override_styles/pressed = SubResource("3")
+theme_override_styles/disabled = SubResource("5")
+theme_override_styles/focus = SubResource("4")
+action_mode = 0
+text = " aaaaaaaaaaaaaaaaaaaa"
+icon_alignment = 1
+
+[node name="Host" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 3
+text = " aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa    "
+
+[node name="Scrollbar" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 3
+color = Color(0.105882, 0.105882, 0.117647, 1)
+
+[connection signal="pressed" from="Lobby" to="." method="_on_pressed"]
