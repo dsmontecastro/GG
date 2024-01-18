@@ -1,0 +1,32 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://bflhjlxqwu3l2"]
+
+[ext_resource type="Texture2D" uid="uid://dv7jfg8qsgxu4" path="res://assets/sprites/game/tiles.png" id="1_oksjd"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hl3hj"]
+texture = ExtResource("1_oksjd")
+texture_region_size = Vector2i(90, 90)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/next_alternative_id = 2
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-45, -45, 45, -45, 45, 45, -45, 45)
+1:0/1 = 1
+1:0/1/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/1/physics_layer_0/angular_velocity = 0.0
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+1:1/0 = 0
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+
+[resource]
+tile_size = Vector2i(90, 90)
+physics_layer_0/collision_layer = 3
+physics_layer_0/collision_mask = 3
+custom_data_layer_0/name = "filled"
+custom_data_layer_0/type = 1
+sources/0 = SubResource("TileSetAtlasSource_hl3hj")
