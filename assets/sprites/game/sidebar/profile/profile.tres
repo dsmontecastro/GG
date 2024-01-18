@@ -1,0 +1,48 @@
+[gd_resource type="SpriteFrames" load_steps=29 format=3]
+
+[ext_resource type="Texture2D" uid="uid://ct74dlauff7f2" path="res://assets/sprites/game/sidebar/profile/loader/04.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://ct7v6i3ktaypr" path="res://assets/sprites/game/sidebar/profile/loader/11.png" id="2"]
+[ext_resource type="Texture2D" uid="uid://ch3ibfjib5886" path="res://assets/sprites/game/sidebar/profile/loader/12.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://dm2fy4tspjrv6" path="res://assets/sprites/game/sidebar/profile/loader/13.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://dcnlg07dcx3le" path="res://assets/sprites/game/sidebar/profile/loader/01.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://cqvr6s15s0mmm" path="res://assets/sprites/game/sidebar/profile/loader/05.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://cp223ast6rn2k" path="res://assets/sprites/game/sidebar/profile/loader/03.png" id="7"]
+[ext_resource type="Texture2D" uid="uid://dqbsqkl6sa3yh" path="res://assets/sprites/game/sidebar/profile/loader/06.png" id="8"]
+[ext_resource type="Texture2D" uid="uid://bsgl66y5nmt46" path="res://assets/sprites/game/sidebar/profile/loader/02.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://docf3qproacf3" path="res://assets/sprites/game/sidebar/profile/loader/07.png" id="10"]
+[ext_resource type="Texture2D" uid="uid://dbb25vu6d8kea" path="res://assets/sprites/game/sidebar/profile/loader/08.png" id="11"]
+[ext_resource type="Texture2D" uid="uid://bln1po8ab6fs6" path="res://assets/sprites/game/sidebar/profile/loader/09.png" id="12"]
+[ext_resource type="Texture2D" uid="uid://dfam3o3w2cye8" path="res://assets/sprites/game/sidebar/profile/loader/10.png" id="13"]
+[ext_resource type="Texture2D" uid="uid://docf3qproacf3" path="res://assets/sprites/game/sidebar/profile/loader/07.png" id="14"]
+[ext_resource type="Texture2D" uid="uid://ct7v6i3ktaypr" path="res://assets/sprites/game/sidebar/profile/loader/11.png" id="15"]
+[ext_resource type="Texture2D" uid="uid://c6nktnq6rbb3r" path="res://assets/sprites/game/sidebar/profile/loader/14.png" id="16"]
+[ext_resource type="Texture2D" uid="uid://cqvr6s15s0mmm" path="res://assets/sprites/game/sidebar/profile/loader/05.png" id="17"]
+[ext_resource type="Texture2D" uid="uid://dqbsqkl6sa3yh" path="res://assets/sprites/game/sidebar/profile/loader/06.png" id="18"]
+[ext_resource type="Texture2D" uid="uid://dbb25vu6d8kea" path="res://assets/sprites/game/sidebar/profile/loader/08.png" id="19"]
+[ext_resource type="Texture2D" uid="uid://bln1po8ab6fs6" path="res://assets/sprites/game/sidebar/profile/loader/09.png" id="20"]
+[ext_resource type="Texture2D" uid="uid://c6nktnq6rbb3r" path="res://assets/sprites/game/sidebar/profile/loader/14.png" id="21"]
+[ext_resource type="Texture2D" uid="uid://dfam3o3w2cye8" path="res://assets/sprites/game/sidebar/profile/loader/10.png" id="22"]
+[ext_resource type="Texture2D" uid="uid://dm2fy4tspjrv6" path="res://assets/sprites/game/sidebar/profile/loader/13.png" id="23"]
+[ext_resource type="Texture2D" uid="uid://ct74dlauff7f2" path="res://assets/sprites/game/sidebar/profile/loader/04.png" id="24"]
+[ext_resource type="Texture2D" uid="uid://ch3ibfjib5886" path="res://assets/sprites/game/sidebar/profile/loader/12.png" id="25"]
+[ext_resource type="Texture2D" uid="uid://cp223ast6rn2k" path="res://assets/sprites/game/sidebar/profile/loader/03.png" id="26"]
+[ext_resource type="Texture2D" uid="uid://bsgl66y5nmt46" path="res://assets/sprites/game/sidebar/profile/loader/02.png" id="27"]
+[ext_resource type="Texture2D" uid="uid://dcnlg07dcx3le" path="res://assets/sprites/game/sidebar/profile/loader/01.png" id="28"]
+
+[resource]
+animations = [ {
+"frames": [ ExtResource( 28 ), ExtResource( 27 ), ExtResource( 26 ), ExtResource( 24 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 14 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 22 ), ExtResource( 15 ), ExtResource( 25 ), ExtResource( 23 ), ExtResource( 21 ) ],
+"loop": true,
+"name": "Loader",
+"speed": 30.0
+}, {
+"frames": [ ExtResource( 5 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 1 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 16 ) ],
+"loop": false,
+"name": "Toggle",
+"speed": 30.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
