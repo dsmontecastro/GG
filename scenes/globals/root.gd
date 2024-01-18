@@ -1,5 +1,3 @@
-# Completely forgot what this is for...
-
 extends Node
 
 func quit():
@@ -7,15 +5,16 @@ func quit():
 	get_tree().quit()
 
 
+# Grid Functions ------------------------------------------------------------ #
 
-func make_matrix(rows: int, cols: int, filler = null) -> Array:
+func make_arr(rows: int, cols: int, filler = null) -> Array:
 
-	var matrix = []
-	for _i in range(rows):
+	var arr = []
+	for _r in range(rows):
 		var row = []
 		row.resize(cols)
 		if filler != null:
 			row.fill(filler)
-		matrix.append(row)
+		arr.append(row)
 
-	return matrix
+	return arr
