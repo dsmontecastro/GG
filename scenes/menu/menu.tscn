@@ -34,9 +34,6 @@ offset_bottom = 1080.0
 grow_horizontal = 1
 grow_vertical = 1
 
-[node name="HostType" parent="Make/Panel/HBox/VBox/Hosting" index="1"]
-selected = -1
-
 [node name="Scroll" parent="Make/Panel/HBox/VBox/Finding/Panel" index="0"]
 offset_top = 0.0
 offset_bottom = 291.0
