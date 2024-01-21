@@ -5,7 +5,7 @@ class_name Error
 const DEF_MSG = "An unknown error has occurred."
 
 ## The [Label] to display the [b]error message[/b].
-@onready var Message = $%Message
+@onready var Message: LineEdit = $%Message
 
 
 # Core Functions ------------------------------------------------------------- #

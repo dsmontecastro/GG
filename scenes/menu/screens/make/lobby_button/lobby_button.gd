@@ -19,7 +19,7 @@ func _on_pressed(): LOBBY.join_lobby(_id)
 # Text Setters --------------------------------------------------------------- #
 
 ## Tracker for the [b]ID[/b] assigned to the [LobbyButton].
-var _id: int = -1
+var _id := -1
 
 ## Setter for [member LobbyButton._id].
 func set_id(val: int): _id = val

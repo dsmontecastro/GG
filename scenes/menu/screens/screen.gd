@@ -32,13 +32,13 @@ func _success(success: bool, msg: String):
 const DURATION = 0.15
 
 ## Default offset for Tweening
-@onready var OFFSET = Vector2(get_viewport().get_visible_rect().size.x, 0)
+@onready var OFFSET := Vector2(get_viewport().get_visible_rect().size.x, 0)
 
 
 ## Animation-Tween for sliding a [Control] Node given an [param offset].
 func slide(offset: Vector2):
-	var pos = get_screen_position()
-	var tween: Tween = create_tween()
+	var pos := get_position()
+	var tween := create_tween()
 	tween.tween_property(self, 'position', pos + offset, DURATION)
 
 ## Shortcut for right-oriented [method Menu.slide].

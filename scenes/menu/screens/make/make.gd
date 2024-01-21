@@ -10,15 +10,15 @@ const DIST = LOBBY.DIST.GLOBAL
 const LOBBY_TAG = 'Lobby_'
 
 # Member Scenes
-@onready var LOBBIES = $%Lobbies
-@onready var HOST_TYPE = $%HostType
-@onready var HOST_NAME  = $%HostName
-@onready var FIND_NAME = $%FindName
-@onready var FIND_BUTT = $%FindButt
-@onready var CANCEL = $%Cancel
+@onready var LOBBIES: VBoxContainer = $%Lobbies
+@onready var HOST_TYPE: OptionButton = $%HostType
+@onready var HOST_NAME: LineEdit = $%HostName
+@onready var FIND_NAME: LineEdit = $%FindName
+@onready var FIND_BUTT: Button = $%FindButt
+@onready var CANCEL: Button = $%Cancel
 
 ## The preloaded [LobbyButton] scene.
-var LOBBY_BUTT = preload('lobby_button/lobby_button.tscn')
+var LOBBY_BUTT := preload('lobby_button/lobby_button.tscn')
 
 
 # Core Funtions -------------------------------------------------------------------------------- #
@@ -47,13 +47,13 @@ func _reset():  LOBBY._leave()
 ## Requests to host a room name to the text in [member MakeScreen.HostName].
 func host_room():
 	if HOST_NAME .text:
-		var lobby_name = HOST_NAME .text
-		var lobby_type = HOST_TYPE.get_selected_id()
+		var lobby_name := HOST_NAME.text
+		var lobby_type := HOST_TYPE.get_selected_id()
 		LOBBY.host_lobby(MODE, lobby_type, lobby_name)
 
 ## Requests room(s) starting with the name in [member MakeScreen.FindName].
 func find_rooms():
-	var lobby_name = FIND_NAME.text.strip_edges()
+	var lobby_name := FIND_NAME.text.strip_edges()
 	LOBBY.request_lobbies(MODE, DIST, lobby_name)
 
 ## Displays [param lobbies] in [member MakeScreen.LOBBIES] as [LobbyButton]s.[br]
@@ -69,10 +69,10 @@ func list_rooms(lobbies: Array):
 
 	else:
 
-		var i = -1
+		var i := -1
 		for id in lobbies:
 
-			var lobby = LOBBY_BUTT.instantiate()
+			var lobby: LobbyButton = LOBBY_BUTT.instantiate()
 			lobby.name = '%s_%d' % [LOBBY_TAG, i]
 			LOBBIES.add_child(lobby)
 
@@ -85,7 +85,7 @@ func list_rooms(lobbies: Array):
 				refocus_prev(lobby, FIND_BUTT)
 
 			else:
-				var prev = LOBBIES.get_child(i)
+				var prev: LobbyButton = LOBBIES.get_child(i)
 				refocus_next(prev, lobby)
 				refocus_prev(lobby, prev)
 
@@ -106,7 +106,7 @@ func get_target(node: Control):
 ## Sets the next and/or bottom neighbors for [member MakeScreen.FIND_BUTT] and
 ## [member MakeScreen.FIND_NAME].
 func refocus_find(node: Control = CANCEL):
-	var path = get_target(node).get_path()
+	var path := get_target(node).get_path()
 	FIND_NAME.focus_neighbor_bottom = path
 	FIND_BUTT.focus_neighbor_bottom = path
 	FIND_BUTT.focus_next = path
@@ -114,7 +114,7 @@ func refocus_find(node: Control = CANCEL):
 ## Sets the left and right neighbors for the given [LobbyButton] [param node].
 func refocus_side(node: LobbyButton):
 	node = get_target(node)
-	var path = node.get_path()
+	var path := node.get_path()
 	node.focus_neighbor_left = path
 	node.focus_neighbor_right = path
 
@@ -122,7 +122,7 @@ func refocus_side(node: LobbyButton):
 func refocus_next(node: Control, next: Control):
 	node = get_target(node)
 	next = get_target(next)
-	var path = next.get_path()
+	var path := next.get_path()
 	node.focus_neighbor_bottom = path
 	node.focus_next = path
 
@@ -130,6 +130,6 @@ func refocus_next(node: Control, next: Control):
 func refocus_prev(node: Control, prev: Control):
 	node = get_target(node)
 	prev = get_target(prev)
-	var path = prev.get_path()
+	var path := prev.get_path()
 	node.focus_neighbor_top = path
 	node.focus_previous = path

@@ -6,8 +6,8 @@ const MODE = LOBBY.MODE.AUTO
 const TYPE = LOBBY.TYPE.INVISIBLE
 
 # Member Scenes
-@onready var Counter = $%Counter
-@onready var Cancel = $%Cancel
+@onready var Counter: Label = $%Counter
+@onready var Cancel: Button = $%Cancel
 
 
 # Core Functions ------------------------------------------------------------- #
@@ -41,29 +41,29 @@ func _err(msg: String):
 	_reset()
 
 
-# Timer Functions ------------------------------------------------------------------------------- #
+# TIMEr Functions ------------------------------------------------------------------------------- #
 
 ## Generic error message to be supplied to [method Screen._err].
 const TIMEOUT = 'Failed to automatically match you with a lobby. Please try again.'
 
 ## Distance parameter for [method FindScreen.matchmaking].
-var DIST: LOBBY.DIST = LOBBY.DIST.CLOSE
+var DIST := LOBBY.DIST.CLOSE
 
-## Tracker for the time passed and to be displayed.
-var time: float = 0.0
+## Tracker for the TIME passed and to be displayed.
+var TIME := 0.0
 
 ## Sets the text in the [i]mm:ss[/i] format for [member FindScreen.Counter].
 func set_counter(mins: int = 0, secs: int = 0):
 	Counter.text = '%02d : %02d' % [mins, secs]
 
-## Increments [member FindScreen.time] and [member FindScreen.DIST].
+## Increments [member FindScreen.TIME] and [member FindScreen.DIST].
 func _process(delta):
 
 	if DIST < 4:
 
-		time += delta
-		var secs: int = int(time) % 60
-		var mins: int = int(time / 60) % 60
+		TIME += delta
+		var secs: int = int(TIME) % 60
+		var mins: int = int(TIME / 60) % 60
 
 		set_counter(mins, secs)
 
@@ -77,7 +77,7 @@ func _process(delta):
 # Matchmaking Attempts ------------------------------------------------------- #
 
 ## Tracker for whether [FindScreen] is currently 'hosting' a match or not.
-var HOSTING = false
+var HOSTING := false
 
 ## Attempts to find matches.
 func find_match():
