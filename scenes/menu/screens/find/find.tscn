@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://beuykqstt1ck4"]
 
-[ext_resource type="Script" path="res://scenes/menu/find/find.gd" id="1"]
+[ext_resource type="Script" path="res://scenes/menu/screens/find/find.gd" id="1"]
 
-[node name="Margin" type="MarginContainer"]
+[node name="Find" type="MarginContainer"]
 offset_right = 1920.0
 offset_bottom = 1080.0
 size_flags_horizontal = 3

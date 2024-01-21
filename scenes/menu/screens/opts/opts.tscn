@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://bm3ihe3wo2pu"]
 
-[ext_resource type="Script" path="res://scenes/menu/opts/opts.gd" id="1"]
+[ext_resource type="Script" path="res://scenes/menu/screens/opts/opts.gd" id="1"]
 
-[node name="menuOpts" type="MarginContainer"]
+[node name="Opts" type="MarginContainer"]
 offset_right = 1920.0
 offset_bottom = 1080.0
 script = ExtResource("1")
@@ -73,7 +73,7 @@ modulate = Color(1, 1, 1, 0)
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 
-[node name="Cancel" type="Button" parent="Margin/Settings/VBox/Buttons" groups=["returnOpts"]]
+[node name="Cancel" type="Button" parent="Margin/Settings/VBox/Buttons" groups=["OptsExit"]]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -85,7 +85,7 @@ size_flags_horizontal = 7
 size_flags_vertical = 0
 text = "Apply"
 
-[node name="Save" type="Button" parent="Margin/Settings/VBox/Buttons" groups=["returnOpts"]]
+[node name="Save" type="Button" parent="Margin/Settings/VBox/Buttons" groups=["OptsExit"]]
 layout_mode = 2
 size_flags_horizontal = 7
 size_flags_vertical = 0
@@ -101,3 +101,6 @@ modulate = Color(1, 1, 1, 0)
 self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
+
+[connection signal="pressed" from="Margin/Settings/VBox/Buttons/Apply" to="." method="apply"]
+[connection signal="pressed" from="Margin/Settings/VBox/Buttons/Save" to="." method="save"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://i1xfe0vewwjo"]
 
-[ext_resource type="Script" path="res://scenes/menu/make/make.gd" id="1_tg6kx"]
+[ext_resource type="Script" path="res://scenes/menu/screens/make/make.gd" id="1_tg6kx"]
 
 [sub_resource type="Theme" id="Theme_fke6b"]
 
@@ -74,7 +74,6 @@ focus_neighbor_bottom = NodePath("../../Finding/Search/FindName")
 focus_next = NodePath("../HostButt")
 focus_previous = NodePath("../HostName")
 icon_alignment = 1
-selected = 0
 fit_to_longest_item = false
 
 [node name="HostButt" type="Button" parent="Panel/HBox/VBox/Hosting"]

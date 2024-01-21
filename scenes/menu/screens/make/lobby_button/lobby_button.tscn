@@ -1,30 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cy5082he7vpp8"]
 
-[sub_resource type="GDScript" id="GDScript_rkqk2"]
-script/source = "extends MarginContainer
-
-var id = -1
-const LIM = 15
-const TAG = LOBBY.TAG
-
-
-func set_id(val: int): id = val
-
-func set_host(val: String): $Host.text = trim(val) + \"    \"
-
-func set_lobby(val: String):
-	if val: val = val.replace(TAG, \"\")
-	$Lobby.text = \"  \" + trim(val)
-
-
-func trim(val: String) -> String:
-	if len(val) > LIM:
-		val = val.substr(0, LIM-3) + \"...\"
-	return val
-
-
-func _on_pressed(): LOBBY.join_lobby(id)
-"
+[ext_resource type="Script" path="res://scenes/menu/screens/make/lobby_button/lobby_button.gd" id="1_egxcl"]
 
 [sub_resource type="StyleBoxFlat" id="1"]
 bg_color = Color(0, 0, 0, 0.392157)
@@ -48,9 +24,9 @@ anchor_bottom = 1.0
 offset_right = -633.0
 offset_bottom = -573.0
 size_flags_horizontal = 3
-script = SubResource("GDScript_rkqk2")
+script = ExtResource("1_egxcl")
 
-[node name="Lobby" type="Button" parent="."]
+[node name="Title" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -77,4 +53,4 @@ size_flags_horizontal = 8
 size_flags_vertical = 3
 color = Color(0.105882, 0.105882, 0.117647, 1)
 
-[connection signal="pressed" from="Lobby" to="." method="_on_pressed"]
+[connection signal="pressed" from="Title" to="." method="_on_pressed"]

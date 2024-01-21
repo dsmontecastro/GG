@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3 uid="uid://ci0snwwt7wder"]
+
+[ext_resource type="Script" path="res://scenes/menu/menu.gd" id="1_kx1f0"]
+[ext_resource type="PackedScene" uid="uid://i1xfe0vewwjo" path="res://scenes/menu/screens/make/make.tscn" id="2_do6uw"]
+[ext_resource type="PackedScene" uid="uid://0jryqgglsj36" path="res://scenes/menu/screens/main/main.tscn" id="2_qgi3a"]
+[ext_resource type="PackedScene" uid="uid://bm3ihe3wo2pu" path="res://scenes/menu/screens/opts/opts.tscn" id="3_vmcxt"]
+[ext_resource type="PackedScene" uid="uid://beuykqstt1ck4" path="res://scenes/menu/screens/find/find.tscn" id="4_1jqqc"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_kx1f0")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.0588235, 0.0588235, 0.0588235, 1)
+
+[node name="Main" parent="." groups=["Screens"] instance=ExtResource("2_qgi3a")]
+layout_mode = 0
+
+[node name="Make" parent="." groups=["Screens"] instance=ExtResource("2_do6uw")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -1920.0
+offset_bottom = 1080.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="HostType" parent="Make/Panel/HBox/VBox/Hosting" index="1"]
+selected = -1
+
+[node name="Scroll" parent="Make/Panel/HBox/VBox/Finding/Panel" index="0"]
+offset_top = 0.0
+offset_bottom = 291.0
+
+[node name="Lobbies" type="VBoxContainer" parent="Make/Panel/HBox/VBox/Finding/Panel/Scroll/Lobbies" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 1
+
+[node name="Divider" parent="Make/Panel/HBox/VBox/Finding/Panel" index="2"]
+offset_right = 380.0
+
+[node name="Opts" parent="." groups=["Screens"] instance=ExtResource("3_vmcxt")]
+layout_mode = 1
+offset_left = 1920.0
+offset_right = 3840.0
+
+[node name="Find" parent="." instance=ExtResource("4_1jqqc")]
+visible = false
+layout_mode = 0
+
+[connection signal="resized" from="." to="." method="_resize"]
+[connection signal="pressed" from="Main/VBox/Buttons/VBox/Find" to="." method="find"]
+[connection signal="pressed" from="Main/VBox/Buttons/VBox/Make" to="." method="toggle_make"]
+[connection signal="pressed" from="Main/VBox/Buttons/VBox/Opts" to="." method="toggle_opts"]
+[connection signal="pressed" from="Make/Panel/HBox/VBox/Cancel" to="." method="toggle_make"]
+[connection signal="pressed" from="Opts/Margin/Settings/VBox/Buttons/Cancel" to="." method="toggle_opts"]
+[connection signal="pressed" from="Opts/Margin/Settings/VBox/Buttons/Save" to="." method="toggle_opts"]
+
+[editable path="Main"]
+[editable path="Make"]
+[editable path="Opts"]
+[editable path="Find"]
