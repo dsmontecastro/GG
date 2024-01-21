@@ -39,7 +39,7 @@ const DURATION = 0.15
 func slide(offset: Vector2):
 	var pos = get_screen_position()
 	var tween: Tween = create_tween()
-	tween.property(self, 'position', pos + offset, DURATION)
+	tween.tween_property(self, 'position', pos + offset, DURATION)
 
 ## Shortcut for right-oriented [method Menu.slide].
 func slideR(): slide(OFFSET)
