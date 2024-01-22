@@ -13,18 +13,18 @@ func _reset(): pass
 
 ## Emits a signal to the [Menu] that some error has occured,
 ## along with an accompanying [param message].
-func _err(msg: String): SIGNALS.emit_signal(SIGNALS.ERR.ERROR, msg)
+func _err(msg: String): SIGNALS.error.emit(msg)
 
 
 ## Emits a signal to the [Menu] that a game has succesfully been prepared.
 ## Will log [param message] for debugging.
-func _play(msg: String): SIGNALS.emit_signal(SIGNALS.MENU.PLAY, msg)
+func _play(msg: String): SIGNALS.menu_play.emit(msg)
 
 
 ## Parses the response recieved from a [b]join[/b] or [b]host[/b] request.
-## A success will be forwarded to [method Menu._play].[br]
+## A [param success] will be forwarded to [method Menu._play].[br]
 ## Else, an [Error] page will be displayed.
-func _success(success: bool, msg: String):
+func _response(success: bool, msg: String):
 	if success: _play(msg)
 	else: _err(msg)
 

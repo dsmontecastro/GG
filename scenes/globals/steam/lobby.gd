@@ -28,7 +28,7 @@ func _ready():
 	# Lobby / Update Signals
 	Steam.lobby_match_list.connect(get_lobbies)
 	Steam.lobby_data_update.connect(data_update)
-	Steam.lobby_chat_update.connect(room_update)
+	Steam.lobby_chat_update.connect(users_update)
 	Steam.persona_state_change.connect(user_update)
 
 	## @tutorial: https://godotsteam.com/tutorials/lobbies/
@@ -76,12 +76,12 @@ func _debug():
 # Lobby Updates -------------------------------------------------------------- #
 
 ## Enacted on [signal Steam.persona_state_change].[br]
-## Immediately performs a [method LOBBY.update_members] call.
+## Indicates that a [b]member[/b] has updated their data.
 func user_update(_userID: int, _flag: int): update_members()
 
 
 ## Enacted on [signal Steam.lobby_data_update].[br]
-## Updates members and emits a [signal SIGNALS.data_update] signal.
+## Indicates that the [ROOM] metadata has been updated.
 func data_update(success: int, id: int, userID: int):
 
 	## @tutorial: https://godotsteam.com/classes/matchmaking/#getlobbymemberdata
@@ -93,12 +93,12 @@ func data_update(success: int, id: int, userID: int):
 		else: message += 'failed...'
 
 		update_members()
-		SIGNALS.emit_signal(SIGNALS.ROOM.DATA, success, message)
+		SIGNALS.data_update.emit(success, message)
 
 
 ## Enacted on [signal Steam.lobby_chat_update].[br]
-## Updates members and emits a [signal SIGNALS.chat_update] signal.
-func room_update(_id: int, changedID: int, _changerID: int, state: int):
+## Indicates that a [class ROOM.Member] has joined or left the [ROOM].
+func users_update(_id: int, changedID: int, _changerID: int, state: int):
 
 	var changedName := Steam.getFriendPersonaName(changedID)
 
@@ -112,7 +112,7 @@ func room_update(_id: int, changedID: int, _changerID: int, state: int):
 		_:  message = '%s has done... something.' % changedName
 
 	update_members()
-	SIGNALS.emit_signal(SIGNALS.ROOM.ROOM, state, message)
+	SIGNALS.room_update.emit(state, message)
 
 
 ## Updates [member ROOM.MEMBERS] to reflect any [Steam]-side changes.
@@ -142,9 +142,8 @@ func request_lobbies(mode: int = MODE.AUTO,
 	Steam.requestLobbyList()
 
 
-## Recieves the requested [param lobbies] and emits it elsewhere.
-func get_lobbies(lobbies: Array):
-	SIGNALS.emit_signal(SIGNALS.ROOM.FIND, lobbies)
+## Recieves the requested [Array] of [param lobbies] and emits it elsewhere.
+func get_lobbies(lobbies: Array): SIGNALS.found_lobbies.emit(lobbies)
 
 
 # Hosting -------------------------------------------------------------------- #
@@ -185,7 +184,7 @@ func host_status(connection: int, id: int):
 			16: message = 'The message was sent to the Steam servers, but it didn\'t respond.'
 			25: message = 'You have created too many lobbies and are being rate limited.'
 
-	SIGNALS.emit_signal(SIGNALS.ROOM.HOST, success, message)
+	SIGNALS.host_response.emit(success, message)
 
 
 # Joining Functions ---------------------------------------------------------- #
@@ -236,7 +235,7 @@ func join_status(id: int, _permissions: int, _locked: bool, response: int):
 			10: message = 'A user in the lobby has blocked you from joining.'
 			11: message = 'A user you have blocked is in the lobby.'
 
-	if not host: SIGNALS.emit_signal(SIGNALS.ROOM.JOIN, success, message)
+	if not host: SIGNALS.join_response.emit(success, message)
 
 
 # Gameplay Functions --------------------------------------------------------- #

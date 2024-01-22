@@ -58,7 +58,7 @@ func on_failure(id: int, err: int):
 		5: message.replace('_', '[unused]')
 		_: message.replace('_', 'Unknown error (Code: %d)' % err)
 
-	SIGNALS.emit_signal(SIGNALS.ERR.ERROR, message)
+	SIGNALS.error.emit(message)
 
 
 # Messaging ------------------------------------------------------------------ #
@@ -85,13 +85,12 @@ func read() -> Message:
 
 		var packet: Dictionary = Steam.readP2PPacket(size, 0)
 
-		if packet.is_empty() or packet == null:
-			SIGNALS.emit_signal(SIGNALS.ERR.ERROR, NULL)
+		if !packet or packet.is_empty(): SIGNALS.error.emit(NULL)
 
 		elif packet['steam_id_remote'] in LOBBY.MEMBERS:
 			data.unpack(packet[data])
 
-		else: SIGNALS.emit_signal(SIGNALS.ERR.ERROR, NULL)
+		else: SIGNALS.error.emit('[WARNING] Unknown user detected!')
 
 	return data
 

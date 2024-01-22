@@ -18,9 +18,9 @@ func _ready(): set_process(false)
 ## Starts matchmaking.
 func _start():
 	Cancel.grab_focus()
-	SIGNALS.find_lobbies.connect(matchmaking)
-	SIGNALS.host_success.connect(_success)
-	SIGNALS.join_success.connect(_success)
+	SIGNALS.found_lobbies.connect(matchmaking)
+	SIGNALS.host_response.connect(_response)
+	SIGNALS.join_response.connect(_response)
 	set_counter(0, 0)
 	set_process(true)
 	find_match()
@@ -31,9 +31,9 @@ func _start():
 func _reset():
 	if visible:
 		LOBBY._leave()
-		SIGNALS.find_lobbies.disconnect(matchmaking)
-		SIGNALS.host_success.disconnect(_success)
-		SIGNALS.join_success.disconnect(_success)
+		SIGNALS.found_lobbies.disconnect(matchmaking)
+		SIGNALS.host_response.disconnect(_response)
+		SIGNALS.join_response.disconnect(_response)
 		set_process(false)
 		hide()
 
@@ -106,7 +106,7 @@ func matchmaking(lobbies: Array):
 	if lobbies.size() > 0:
 
 		for id in lobbies:
-			LOBBY._debug(id)
+			LOBBY._debug()
 			if id != LOBBY.ID:
 				LOBBY.join_lobby(id)
 				return

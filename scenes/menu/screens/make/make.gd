@@ -26,9 +26,9 @@ var LOBBY_BUTT := preload('lobby_button/lobby_button.tscn')
 
 func _ready():
 
-	SIGNALS.find_lobbies.connect(list_rooms)
-	SIGNALS.host_success.connect(_success)
-	SIGNALS.join_success.connect(_success)
+	SIGNALS.found_lobbies.connect(list_rooms)
+	SIGNALS.host_response.connect(_response)
+	SIGNALS.join_response.connect(_response)
 
 	for item in LOBBY.TYPE:
 		HOST_TYPE.add_item(item, LOBBY.TYPE[item])
