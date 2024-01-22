@@ -1,80 +1,141 @@
 extends Node
+## Handles any P2P or inter-user communication on a [b]global[/b] level.
 
 
-# Basic Functions ------------------------------------------------------------------------------- #
+# Core Functions ------------------------------------------------------------- #
 
-var ENEMY = 0
+## Tracker for the opponent's [Steam] ID.
+var ENEMY_ID := 0
+
 
 func _ready():
-	Steam.connect("p2p_session_connect_fail", Callable(self, "on_failure"))
-	Steam.connect("p2p_session_request", Callable(self, "on_request"))
+	Steam.p2p_session_connect_fail.connect(on_failure)
+	Steam.p2p_session_request.connect(on_request)
 
+
+## (Re)sets [member P2P.ENEMY_ID] from [member LOBBY.MEMBERS].
 func _start():
-	ENEMY = 0
-	for ID in LOBBY.MEMBERS:
-		if ID != USER.ID: ENEMY = ID
+	_reset()
+	for id in LOBBY.MEMBERS:
+		if id != USER.ID:
+			ENEMY_ID = id
+			break
 
-func _reset(): ENEMY = 0
 
+## Sets [member P2P.ENEMY_ID] from [member LOBBY.MEMBERS].
+func _reset(): ENEMY_ID = 0
+
+
+## Runs [method Steam.run_callbacks] in intervals.
 func _process(_d): Steam.run_callbacks()
 
 
-# Initializaiton -------------------------------------------------------------------------------- #
+# Initializaiton ------------------------------------------------------------- #
 
+## Performs a P2P 'handshake' with all other [member ROOM.MEMBERS].
 func handshake():
 	for ID in LOBBY.MEMBERS:
 		if ID != USER.ID: send(P2P.MSSG.HANDSHAKE)
 
-func on_request(userID: int):
-	Steam.acceptP2PSessionWithUser(userID)
+
+## Starts a P2P-Session with user#[param id].
+func on_request(id: int):
+	Steam.acceptP2PSessionWithUser(id)
 	handshake()
 
 
+## Displays an [Error] page given the user [param id] and the [param err] code.
 func on_failure(id: int, err: int):
 
-	var message = "WARNING: Session failure with ID: %d [_]." % id
+	var message = 'WARNING: Session failure with ID: %d [_].' % id
 
 	match err:
-		0: message.replace("_", "No error given")
-		1: message.replace("_", "Target User not running the same game")
-		2: message.replace("_", "Local User doesn't own app / game")
-		3: message.replace("_", "Target User isn't connected to Steam")
-		4: message.replace("_", "Connection timed out")
-		5: message.replace("_", "Unused")
-		_: message.replace("_", "Unknown error (Code: %d)" % err)
+		0: message.replace('_', 'No error given')
+		1: message.replace('_', 'Target User not running the same game')
+		2: message.replace('_', 'Local User doesn\'t own app / game')
+		3: message.replace('_', 'Target User isn\'t connected to Steam')
+		4: message.replace('_', 'Connection timed out')
+		5: message.replace('_', '[unused]')
+		_: message.replace('_', 'Unknown error (Code: %d)' % err)
 
-	SIGNALS.emit_signal("warning", message)
-
-
-# Sending & Receiving --------------------------------------------------------------------------- #
-
-const PORT = 0
-const TYPE = Steam.P2P_SEND_RELIABLE
-const NULL = "Error: Empty packet!"
+	SIGNALS.emit_signal(SIGNALS.ERR.ERROR, message)
 
 
-func send(msg: int, val = true):
-	var DATA = { "msg": msg, "val": val }
-	Steam.sendP2PPacket(ENEMY, var_to_bytes(DATA), TYPE, PORT)
-	print("Sent: ", DATA)
+# Messaging ------------------------------------------------------------------ #
+
+const PORT = 0							## Default port used.
+const SEND = Steam.P2P_SEND_RELIABLE	## Default [enum Steam.P2PSend] type.
+const NULL = 'Error: Empty packet!'		## Default [Error] message.
 
 
-enum MSSG { HANDSHAKE, ALL_READY, PLAY_GAME, GAME_OVER,
-			SWAP_TURN, MOVE_UNIT, KILL_UNIT }
+## Sends a [Message] to the [member P2P.ENEMY_ID].
+func send(type: TYPE = TYPE.NULL, success = true):
+	var data := Message.new(type, success)
+	Steam.sendP2PPacket(ENEMY_ID, data.pack(), SEND, PORT)
+	print('Sent: ', data.to_dict())
 
-func read() -> Dictionary:
 
-	var DATA = {}
-	var SIZE = Steam.getAvailableP2PPacketSize(PORT)
+## Reads and processses a received [b] [Steam] packet[/b].
+func read() -> Message:
 
-	if SIZE > 0:
+	var data: Message = Message.new()
+	var size := Steam.getAvailableP2PPacketSize(PORT)
 
-		var PACKET: Dictionary = Steam.readP2PPacket(SIZE, 0)
+	if size > 0:
 
-		if PACKET.is_empty() or PACKET == null:
-			SIGNALS.emit_signal("warning", NULL)
+		var packet: Dictionary = Steam.readP2PPacket(size, 0)
 
-		elif PACKET['steam_id_remote'] in LOBBY.MEMBERS:
-			DATA = bytes_to_var(PACKET['data'])
+		if packet.is_empty() or packet == null:
+			SIGNALS.emit_signal(SIGNALS.ERR.ERROR, NULL)
 
-	return DATA
+		elif packet['steam_id_remote'] in LOBBY.MEMBERS:
+			data.unpack(packet[data])
+
+		else: SIGNALS.emit_signal(SIGNALS.ERR.ERROR, NULL)
+
+	return data
+
+
+# Message Class -------------------------------------------------------------- #
+
+## Codes used for translating sending and reading messages.
+enum TYPE {
+	NULL, HANDSHAKE,
+	ALL_READY, PLAY_GAME, GAME_OVER,
+	SWAP_TURN, MOVE_UNIT, KILL_UNIT
+}
+
+
+## Template for handling [b]messages[/b] between users.
+class Message:
+
+	# Properties and Contructors --------------------------------------------- #
+
+	var type: TYPE		## Message [enum Message.TYPE]
+	var value: bool		## Message value
+
+
+	func _init(d_value: bool = false, d_type: TYPE = TYPE.NULL):
+		value = d_value
+		type = d_type
+
+	# Conversions to-or-from Packets ----------------------------------------- #
+
+	## Packs the properties into a [PackedByteArray] object.
+	func pack() -> PackedByteArray:
+		return var_to_bytes(to_dict())
+
+
+	## Unpacks the given [param data], setting the appropriate properties.
+	func unpack(data: Dictionary):
+		for key in data: set(key, data[key])
+
+
+	## Outputs a [Dictionary] of all properties and their values.
+	func to_dict() -> Dictionary:
+		var data = {}
+		for prop in get_property_list():
+			var key = prop['name']
+			var val = get(key)
+			if value: data[key] = val
+		return data

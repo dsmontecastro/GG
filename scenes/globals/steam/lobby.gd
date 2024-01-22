@@ -1,174 +1,177 @@
 extends Node
 
+
 # Lobby Types
-enum TYPE { PRIVATE, FRIENDS, PUBLIC, INVISIBLE }
-enum DIST { CLOSE, DEF, FAR, GLOBAL }
-enum MODE { AUTO, MANUAL }
+enum TYPE { PRIVATE, FRIENDS, PUBLIC, INVISIBLE }	## Shortcut for [enum Steam.LobbyType].
+enum DIST { CLOSE, DEF, FAR, GLOBAL }				## Shortcut for [enum Steam.LobbyDistanceFilter].
+enum MODE { AUTO, MANUAL }							## Custom modes used in matchmaking.
 
 # Constants
-const TAG = ""
-#const TAG = "[GoG]"
-const MAX_MEMBERS = 2
-const FILTER_EQ = 0 as Steam.LobbyComparison
-const FILTER_GTE = 2 as Steam.LobbyComparison
+const TAG := '[GoG] '							## Tag to precede any lobby name.
+const MAX_MEMBERS := 2							## Maximum amount of players in a lobby.
+const FILTER_GTE := 2 as Steam.LobbyComparison	## Shortcut for '>=' (missing from autocomplete).
+const FILTER_EQ := 0 as Steam.LobbyComparison	## Shortcut for '=='.
 
 # Trackers
-var ID = 0
-var NAME = ""
-var FIND = MODE.AUTO
-var MEMBERS = {}
+var FIND: MODE = MODE.AUTO		## Tracker for the current Find-[enum MODE].
 
 
-# Startup --------------------------------------------------------------------------------------- #
+# Core Functions ------------------------------------------------------------- #
 
 func _ready():
 
 	# Host / Join Signals
-	Steam.connect("join_requested", Callable(self, "join_by_invite"))
-	Steam.connect("lobby_created", Callable(self, "host_status"))
-	Steam.connect("lobby_joined", Callable(self, "join_status"))
+	Steam.lobby_created.connect(host_status)
+	Steam.lobby_joined.connect(join_status)
+	Steam.join_requested.connect(join_by_invite)
 
 	# Lobby / Update Signals
-	Steam.connect("lobby_match_list", Callable(self, "get_lobbies"))
-	Steam.connect("persona_state_change", Callable(self, "user_update"))
-	Steam.connect("lobby_chat_update", Callable(self, "lobby_chat_update"))
-	Steam.connect("lobby_data_update", Callable(self, "lobby_data_update"))
+	Steam.lobby_match_list.connect(get_lobbies)
+	Steam.lobby_data_update.connect(data_update)
+	Steam.lobby_chat_update.connect(room_update)
+	Steam.persona_state_change.connect(user_update)
 
-	
-	var ARGS: Array = OS.get_cmdline_args()
+	## @tutorial: https://godotsteam.com/tutorials/lobbies/
+	var args: Array = OS.get_cmdline_args()
 
-	if ARGS.size() > 0: 					# There are arguments to process
-		if ARGS[0] == "+connect_lobby": 	# A Steam connection argument exists
-			if int(ARGS[1]) > 0: 			# Lobby invite exists so try to connect to it
-
-				print("CMD Line Lobby ID: " + str(ARGS[1]))
-				join_lobby(int(ARGS[1]))
-
-
-func _debug(id: int = ID):
-
-		if id <= 0: return "Error: Invalid lobby."
-
-		else:
-
-			var info = [id]
-			info.append(Steam.getNumLobbyMembers(id))
-			info.append(Steam.getLobbyMemberLimit(id))
-			info.append(Steam.getLobbyData(id, "mode"))
-			info.append(Steam.getLobbyData(id, "name"))
-			info.append(Steam.getLobbyData(id, "host"))
-
-			return "%d (%d/%d) [%s]: '%s' by %s" % info
+	if args.size() > 0:
+		if args[0] == '+connect_lobby':
+			if int(args[1]) > 0:
+				join_lobby(int(args[1]))
+				print('CMD Line Lobby ID: ' + str(args[1]))
 
 
-# Reset Functions ------------------------------------------------------------------------------- #
-
+## Resets [member LOBBY.FIND], [ROOM], and [USER] to their initial values.
 func _reset():
-	USER._reset()
-	MEMBERS.clear()
 	FIND = MODE.AUTO
-	NAME = ""
-	ID = 0
+	ROOM._reset()
+	USER._reset()
 
-func _leave(lobbyID: int = ID):
 
-	if lobbyID > 0:
+## Leves the [ROOM] and performs a [method LOBBY._reset].
+func _leave():
+	ROOM._leave()
+	_reset()
 
-		Steam.leaveLobby(lobbyID)
-		for id in MEMBERS:
-			if id != USER.ID:
-				Steam.closeP2PSessionWithUser(id)
 
-		P2P._reset()
-		_reset()
-		
-		print("User has left Lobby#%s" % lobbyID)
-	
+## [TEST] Prints out the current lobby information, if exists.
+func _debug():
+
+	var id := ROOM.ID
+
+	if id <= 0: return 'Error: Invalid lobby.'
+
 	else:
-		print("User was not in a lobby...")
+
+		var info = [id]
+		info.append(Steam.getNumLobbyMembers(id))
+		info.append(Steam.getLobbyMemberLimit(id))
+		info.append(Steam.getLobbyData(id, 'mode'))
+		info.append(Steam.getLobbyData(id, 'name'))
+		info.append(Steam.getLobbyData(id, 'host'))
+
+		return '%d (%d/%d) [%s]: \'%s\' by %s' % info
 
 
-# Update Functions ------------------------------------------------------------------------------ #
+# Lobby Updates -------------------------------------------------------------- #
 
-func lobby_data_update(success: int, lobbyID: int, userID: int):
-
-	if lobbyID != userID:
-
-		var message = "Change to %s " % userID
-
-		if success: message += "successful!"
-		else: message += "failed..."
-
-		update_members()
-		SIGNALS.emit_signal("data_update", success, message)
-
-func lobby_chat_update(_lobbyID: int, changedID: int, _changerID: int, state: int):
-
-	var changedName = Steam.getFriendPersonaName(changedID)
-
-	var message = "%s has _ the lobby." % changedName
-
-	match state:
-		01: message.replace("_", "joined")
-		02: message.replace("_", "left")
-		08: message.replace("_", "been kicked from")
-		16: message.replace("_", "been banned from")
-		_:  message = "%s has done... something." % changedName
-
-	update_members()
-	SIGNALS.emit_signal("lobby_update", state, message)
-
-
+## Enacted on [signal Steam.persona_state_change].[br]
+## Immediately performs a [method LOBBY.update_members] call.
 func user_update(_userID: int, _flag: int): update_members()
 
+
+## Enacted on [signal Steam.lobby_data_update].[br]
+## Updates members and emits a [signal SIGNALS.data_update] signal.
+func data_update(success: int, id: int, userID: int):
+
+	## @tutorial: https://godotsteam.com/classes/matchmaking/#getlobbymemberdata
+	if id != userID:
+
+		var message := 'Change to %s ' % userID
+
+		if success: message += 'successful!'
+		else: message += 'failed...'
+
+		update_members()
+		SIGNALS.emit_signal(SIGNALS.ROOM.DATA, success, message)
+
+
+## Enacted on [signal Steam.lobby_chat_update].[br]
+## Updates members and emits a [signal SIGNALS.chat_update] signal.
+func room_update(_id: int, changedID: int, _changerID: int, state: int):
+
+	var changedName := Steam.getFriendPersonaName(changedID)
+
+	var message := '%s has _ the lobby.' % changedName
+
+	match state:
+		01: message.replace('_', 'joined')
+		02: message.replace('_', 'left')
+		08: message.replace('_', 'been kicked from')
+		16: message.replace('_', 'been banned from')
+		_:  message = '%s has done... something.' % changedName
+
+	update_members()
+	SIGNALS.emit_signal(SIGNALS.ROOM.ROOM, state, message)
+
+
+## Updates [member ROOM.MEMBERS] to reflect any [Steam]-side changes.
 func update_members():
 
-	MEMBERS.clear()
-	var count = Steam.getNumLobbyMembers(ID)
+	ROOM.clear()
+	var id := ROOM.ID
+
+	var count = Steam.getNumLobbyMembers(id)
 
 	for index in range(0, count):
-		var userID = Steam.getLobbyMemberByIndex(ID, index)
+		var userID = Steam.getLobbyMemberByIndex(id, index)
 		var userName = Steam.getFriendPersonaName(userID)
-		var userForm = Steam.getLobbyMemberData(ID, userID, "form")
-		MEMBERS[userID] = { "name": userName, "form": str(userForm) }
+		var userForm = Steam.getLobbyMemberData(id, userID, 'form')
+		ROOM.add(userID, userName, userForm)
 
 
-# Matchmaking Functions ------------------------------------------------------------------------- #
+# Matchmaking Functions ------------------------------------------------------ #
 
-func get_lobbies(lobbies: Array):
-	SIGNALS.emit_signal("find_lobbies", lobbies)
-
-func request_lobbies(lobbyMode: int = MODE.AUTO, lobbyDist: int = DIST.GLOBAL, lobbyName: String = ""):
-	lobbyName = "%s %s" % [ TAG, lobbyName ]
-	Steam.addRequestLobbyListStringFilter("mode", str(lobbyMode), FILTER_EQ)
-	Steam.addRequestLobbyListStringFilter("name", lobbyName, FILTER_GTE)
-	Steam.addRequestLobbyListDistanceFilter(lobbyDist)
-	Steam.addRequestLobbyListFilterSlotsAvailable(1)
+## Requests lobbies given the indicated specs.
+func request_lobbies(mode: int = MODE.AUTO,
+					 dist: int = DIST.GLOBAL,
+					 title: String = ''):
+	Steam.addRequestLobbyListStringFilter('mode', str(mode), FILTER_EQ)
+	Steam.addRequestLobbyListStringFilter('name', TAG + title, FILTER_GTE)
+	Steam.addRequestLobbyListDistanceFilter(dist as Steam.LobbyDistanceFilter)
 	Steam.requestLobbyList()
 
 
-# Hosting Functions ----------------------------------------------------------------------------- #
+## Recieves the requested [param lobbies] and emits it elsewhere.
+func get_lobbies(lobbies: Array):
+	SIGNALS.emit_signal(SIGNALS.ROOM.FIND, lobbies)
 
-func host_lobby(lobbyMode: int, lobbyType: int, lobbyName: String = ""):
-	NAME = lobbyName
-	FIND = lobbyMode as MODE
-	Steam.createLobby(lobbyType as Steam.LobbyType, MAX_MEMBERS)
 
+# Hosting -------------------------------------------------------------------- #
+
+## Attempts to [b]host[/b] a lobby given the indicated specs.
+func host_lobby(mode: int, type: int, title: String = ''):
+	ROOM.NAME = title
+	FIND = mode as MODE
+	Steam.createLobby(type as Steam.LobbyType, MAX_MEMBERS)
+
+
+## Response to the [b]hosting[/b] request, emitted to elsewhere.
 func host_status(connection: int, id: int):
 
-	var success = true
-	var message = "Lobby created successfully!"
+	var success := true
+	var message := 'Lobby created successfully!'
 
 	if connection == 1:
 
-		ID = id
+		ROOM.ID = id
 		USER.HOSTING = true
 		USER.IS_TURN = true
-		if !NAME: NAME = str(id)
+		if !ROOM.NAME: ROOM.NAME = str(id)
 
-		Steam.setLobbyData(id, "host", USER.NAME)
-		Steam.setLobbyData(id, "name", TAG + NAME)
-		Steam.setLobbyData(id, "mode", str(FIND))
+		Steam.setLobbyData(id, 'name', TAG + ROOM.NAME)
+		Steam.setLobbyData(id, 'host', USER.NAME)
+		Steam.setLobbyData(id, 'mode', str(FIND))
 		Steam.setLobbyJoinable(id, true)
 		Steam.allowP2PPacketRelay(true)
 
@@ -176,70 +179,76 @@ func host_status(connection: int, id: int):
 		_reset()
 		success = false
 		match connect:
-			02: message = "The server responded, but with an unknown internal error."
-			03: message = "Your Steam client doesn't have a connection to the back-end."
-			15: message = "Your Steam client doesn't have access to the game or the lobby."
-			16: message = "The message was sent to the Steam servers, but it didn't respond."
-			25: message = "You have created too many lobbies and are being rate limited."
+			02: message = 'The server responded, but with an unknown internal error.'
+			03: message = 'Your Steam client doesn\'t have a connection to the back-end.'
+			15: message = 'Your Steam client doesn\'t have access to the game or the lobby.'
+			16: message = 'The message was sent to the Steam servers, but it didn\'t respond.'
+			25: message = 'You have created too many lobbies and are being rate limited.'
 
-	SIGNALS.emit_signal("host_success", success, message)
+	SIGNALS.emit_signal(SIGNALS.ROOM.HOST, success, message)
 
 
-# Joining Functions ----------------------------------------------------------------------------- #
+# Joining Functions ---------------------------------------------------------- #
 
-func join_lobby(lobbyID: int): Steam.joinLobby(lobbyID)
+## Attempts to [b]join[/b] a lobby with the give [param id].
+func join_lobby(id: int): Steam.joinLobby(id)
 
-func join_by_invite(lobbyID: int, friendID: int):
-	var owner_name = Steam.getFriendPersonaName(friendID)
-	print("Joining %s's lobby..." % owner_name)
-	join_lobby(lobbyID)
 
-func join_status(lobbyID: int, _permissions: int, _locked: bool, response: int):
+## Attempts to [b]join[/b] a lobby generated from a [b]friend invite[/b].
+func join_by_invite(id: int, friendID: int):
+	var friend = Steam.getFriendPersonaName(friendID)
+	print('Joining %s\'s lobby...' % friend)
+	join_lobby(id)
 
-	var success = true
-	var is_own_lobby = true
-	var message = "Lobby joined successfully!"
 
-	# If joining was successful
+## Response to a [b]join[/b] request, emitted to elsewhere.
+func join_status(id: int, _permissions: int, _locked: bool, response: int):
+
+	var host := true
+	var success := true
+	var message := 'Lobby joined successfully!'
+
 	if response == 1:
 
-		if lobbyID != ID:
-			is_own_lobby = false
-			_leave(ID)
+		if id != ROOM.ID:
+			host = false
+			_leave()
 
-		ID = lobbyID
-		FIND = Steam.getLobbyData(lobbyID, "mode")
-		NAME = Steam.getLobbyData(lobbyID, "name")
-		Steam.setLobbyMemberData(ID, "form", "")
+		ROOM.ID = id
+		ROOM.NAME = Steam.getLobbyData(id, 'name')
+		FIND = MODE[Steam.getLobbyData(id, 'mode')]
+
+		Steam.setLobbyMemberData(id, 'form', '')
 		update_members()
 		P2P.handshake()
 
-	# Else it failed for some reason
 	else:
 		success = false
 		match response:
-			02: message = "This lobby no longer exists."
-			03: message = "You don't have permission to join this lobby."
-			04: message = "The lobby is now full."
-			05: message = "Uh... something unexpected happened!"
-			06: message = "You are banned from this lobby."
-			07: message = "You cannot join due to having a limited account."
-			08: message = "This lobby is locked or disabled."
-			09: message = "This lobby is community locked."
-			10: message = "A user in the lobby has blocked you from joining."
-			11: message = "A user you have blocked is in the lobby."
+			02: message = 'This lobby no longer exists.'
+			03: message = 'You don\'t have permission to join this lobby.'
+			04: message = 'The lobby is now full.'
+			05: message = 'Uh... something unexpected happened!'
+			06: message = 'You are banned from this lobby.'
+			07: message = 'You cannot join due to having a limited account.'
+			08: message = 'This lobby is locked or disabled.'
+			09: message = 'This lobby is community locked.'
+			10: message = 'A user in the lobby has blocked you from joining.'
+			11: message = 'A user you have blocked is in the lobby.'
 
-	if not is_own_lobby: SIGNALS.emit_signal("join_success", success, message)
+	if not host: SIGNALS.emit_signal(SIGNALS.ROOM.JOIN, success, message)
 
 
-# Gameplay Functions ---------------------------------------------------------------------------- #
+# Gameplay Functions --------------------------------------------------------- #
 
+## Checks to see if all members are 'ready' to start the [Game].
 func all_ready():
+	
+	var id := ROOM.ID
 
-	if Steam.getNumLobbyMembers(ID) < MAX_MEMBERS: return false
+	if Steam.getNumLobbyMembers(id) < MAX_MEMBERS: return false
 
-	for user in MEMBERS:
-		var form = Steam.getLobbyMemberData(ID, user, "form")
+	for userID in ROOM.MEMBERS:
+		var form := Steam.getLobbyMemberData(id, userID, 'form')
 		if not form: return false
 	return true
-	
