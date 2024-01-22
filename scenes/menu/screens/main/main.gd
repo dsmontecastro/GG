@@ -7,6 +7,7 @@ func _ready(): refocus()
 func _start(): refocus()
 func _reset(): refocus()
 
+
 ## Connects to and quits at the [Root] level.
 func quit(): ROOT.quit()
 
@@ -15,6 +16,7 @@ func quit(): ROOT.quit()
 
 ## The [b]Find Button[/b], used as the primary focus.
 @onready var FIND: Button = $%Find
+
 
 ## Refocuses
 func refocus(): $%Find.grab_focus()

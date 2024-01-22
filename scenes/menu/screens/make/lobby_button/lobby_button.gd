@@ -19,13 +19,16 @@ func _on_pressed(): LOBBY.join_lobby(_id)
 # Text Setters --------------------------------------------------------------- #
 
 ## Tracker for the [b]ID[/b] assigned to the [LobbyButton].
-var _id := -1
+var _id := -1: set = set_id
+
 
 ## Setter for [member LobbyButton._id].
 func set_id(val: int): _id = val
 
+
 ## Setter for the text in [member LobbyButton.HOST].
 func set_host(val: String): HOST.text = trim(val) + '    '
+
 
 ## Setter for the text in [member LobbyButton.TITLE].
 func set_title(val: String):
@@ -36,7 +39,7 @@ func set_title(val: String):
 # Auxiliary Functions -------------------------------------------------------- #
 
 ## Trims the supplied string to a given [param limit].[br]
-## If the string exceeds it,
+## If the string exceeds said [param limit],
 ## the last [b]3[/b] characters will be converted to an ellipsis.[br]
 ## The default length is [member LobbyButton.LIM].
 func trim(text: String, limit: int = LIM) -> String:

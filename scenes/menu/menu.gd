@@ -17,21 +17,25 @@ func _ready():
 	P2P._reset()
 	_start()
 
+
 ## Applies the [method Screen._start] function for all [Screens].
 func _start():
 	for screen in get_tree().get_nodes_in_group('Screens'):
 		screen._start()
+
 
 ## Applies the [method Screen._reset] function for all [Screens].
 func _reset():
 	for screen in get_tree().get_nodes_in_group('Screens'):
 		screen._reset()
 
+
 ## Starts the [Game] proper, along with a [param message] for debugging.
 func _play(msg: String):
 	print(msg)
 	print(LOBBY._debug() + '\n')
 	#LOADER.change_scene_to_file(LOADER.SCENE['GAME'])
+
 
 ## [TEST] For debugging; skips the matchmaking processes and starts the [Game].
 func _test(): SIGNALS.emit_signal(SIGNALS.GAME.PLAY, 'DEBUG')
@@ -42,8 +46,10 @@ func _test(): SIGNALS.emit_signal(SIGNALS.GAME.PLAY, 'DEBUG')
 ## Tracks the current "active" [Screen]
 @onready var ACTIVE: Screen = MAIN
 
+
 ## Toggles the [Find] [Screen].
 func find(): FIND._start()
+
 
 ## Transitions to or from the [Make] [Screen].
 func toggle_make():
@@ -56,6 +62,7 @@ func toggle_make():
 		MAKE.slideR()
 		MAKE._start()
 		ACTIVE = MAKE
+
 
 ## Transitions to or from the [Opts] [Screen].
 func toggle_opts():

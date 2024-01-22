@@ -17,6 +17,7 @@ const LOBBY_TAG = 'Lobby_'
 @onready var FIND_BUTT: Button = $%FindButt
 @onready var CANCEL: Button = $%Cancel
 
+
 ## The preloaded [LobbyButton] scene.
 var LOBBY_BUTT := preload('lobby_button/lobby_button.tscn')
 
@@ -33,10 +34,12 @@ func _ready():
 		HOST_TYPE.add_item(item, LOBBY.TYPE[item])
 	HOST_TYPE.select(LOBBY.TYPE.PUBLIC)
 
+
 ## Refocuses to [member HOST_NAME ] and initializes the rooms list.
 func _start():
 	HOST_NAME.grab_focus()
 	find_rooms()
+
 
 ## Leaves the current room joined, if exists.
 func _reset():  LOBBY._leave()
@@ -51,10 +54,12 @@ func host_room():
 		var lobby_type := HOST_TYPE.get_selected_id()
 		LOBBY.host_lobby(MODE, lobby_type, lobby_name)
 
+
 ## Requests room(s) starting with the name in [member MakeScreen.FindName].
 func find_rooms():
 	var lobby_name := FIND_NAME.text.strip_edges()
 	LOBBY.request_lobbies(MODE, DIST, lobby_name)
+
 
 ## Displays [param lobbies] in [member MakeScreen.LOBBIES] as [LobbyButton]s.[br]
 ## Additionally, focus mapping will be applied to all buttons as they are added.
@@ -103,6 +108,7 @@ func get_target(node: Control):
 		node = node.get_node('Title')
 	return node
 
+
 ## Sets the next and/or bottom neighbors for [member MakeScreen.FIND_BUTT] and
 ## [member MakeScreen.FIND_NAME].
 func refocus_find(node: Control = CANCEL):
@@ -111,12 +117,14 @@ func refocus_find(node: Control = CANCEL):
 	FIND_BUTT.focus_neighbor_bottom = path
 	FIND_BUTT.focus_next = path
 
+
 ## Sets the left and right neighbors for the given [LobbyButton] [param node].
 func refocus_side(node: LobbyButton):
 	node = get_target(node)
 	var path := node.get_path()
 	node.focus_neighbor_left = path
 	node.focus_neighbor_right = path
+
 
 ## Sets the next and bottom neighbors for the given [LobbyButton] [param node].
 func refocus_next(node: Control, next: Control):
@@ -125,6 +133,7 @@ func refocus_next(node: Control, next: Control):
 	var path := next.get_path()
 	node.focus_neighbor_bottom = path
 	node.focus_next = path
+
 
 ## Sets the previous and top neighbors for the given [LobbyButton] [param node].
 func refocus_prev(node: Control, prev: Control):

@@ -10,13 +10,16 @@ class_name Screen
 func _start(): pass
 func _reset(): pass
 
+
 ## Emits a signal to the [Menu] that some error has occured,
 ## along with an accompanying [param message].
 func _err(msg: String): SIGNALS.emit_signal(SIGNALS.ERR.ERROR, msg)
 
+
 ## Emits a signal to the [Menu] that a game has succesfully been prepared.
 ## Will log [param message] for debugging.
 func _play(msg: String): SIGNALS.emit_signal(SIGNALS.MENU.PLAY, msg)
+
 
 ## Parses the response recieved from a [b]join[/b] or [b]host[/b] request.
 ## A success will be forwarded to [method Menu._play].[br]
@@ -41,8 +44,10 @@ func slide(offset: Vector2):
 	var tween := create_tween()
 	tween.tween_property(self, 'position', pos + offset, DURATION)
 
+
 ## Shortcut for right-oriented [method Menu.slide].
 func slideR(): slide(OFFSET)
+
 
 ## Shortcut for left-oriented [method Menu.slide].
 func slideL(): slide(-OFFSET)
