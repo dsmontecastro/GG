@@ -11,17 +11,18 @@ config_version=5
 [application]
 
 config/name="Games of the General"
-run/main_scene="res://scenes/menu/main.tscn"
+run/main_scene="res://scenes/menu/menu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 LOBBY="*res://scenes/globals/steam/lobby.gd"
-SIGNALS="*res://scenes/globals/steam/signals.gd"
+SIGNALS="*res://scenes/globals/signals.gd"
 P2P="*res://scenes/globals/steam/p2p.gd"
 ROOT="*res://scenes/globals/root.gd"
 USER="*res://scenes/globals/steam/user.gd"
+ROOM="*res://scenes/globals/steam/room.gd"
 
 [display]
 
