@@ -1,5 +1,6 @@
 extends Popup
 class_name Error
+## A global pop-up to display any error code and message.
 
 ## The default [b]error message[/b] to display.
 const DEF_MSG = "An unknown error has occurred."
@@ -10,13 +11,15 @@ const DEF_MSG = "An unknown error has occurred."
 
 # Core Functions ------------------------------------------------------------- #
 
-func _ready(): SIGNALS.warning.connect(_start)
+func _ready(): SIGNALS.error.connect(_start)
+
 
 ## Shows the [Errpr] page, along with the accompanying message.
 func _start(msg: String = DEF_MSG):
 	print("[WARNING] %s" % msg)
 	Message.text = msg
 	self.show()
+
 
 ## Resets and hides the [Errpr] page.
 func _reset():
