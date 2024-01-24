@@ -11,11 +11,17 @@ signal error(message: String)	## A message has been forwarded to [Error].
 # Room and Lobbies ----------------------------------------------------------- #
 
 signal data_update(success: bool, message: String)		## The [ROOM] metadata has been updated.
-signal users_update(state, message: String)				## A [class ROOM.Member] has joined or left the [ROOM].
-signal found_lobbies(lobbies: Array)					## The lost of [param lobbies] has been updated.
+signal users_update(state: int, message: String)		## A [class ROOM.Member] has joined or left.
+signal found_lobbies(lobbies: Array)					## The [Steam] [param lobbies] have been updated.
 
 signal host_response(success: bool, message: String)	## Response to a [b]hosting[/b] request.
 signal join_response(success: bool, message: String)	## Response to a [b]join[/b] request.
+
+
+# Loader --------------------------------------------------------------------- #
+
+signal loading_covered				## [LoaderAnim] has covered the screen.
+signal loading_scene(val: bool)		## [LOADER] state has started or finished processing a scene.
 
 
 # Messaging ------------------------------------------------------------------ #
@@ -26,7 +32,7 @@ signal join_response(success: bool, message: String)	## Response to a [b]join[/b
 
 # Menu ---------------------------------------------------------------------- #
 
-#signal menu_reset(message: String)	## @deprecated: Unused at the moment.
+signal menu_reset(message: String)	## Reset the [Menu] and its components.
 signal menu_play(message: String)	## Transition from [Menu] to [Game].
 
 
