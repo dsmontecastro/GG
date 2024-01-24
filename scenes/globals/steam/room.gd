@@ -34,15 +34,21 @@ func _leave():
 	else: print('User was not in a lobby...')
 
 
-## Returns the number of users currently with the user.
-func count() -> int: return MEMBERS.size()
+
+# Member Functions and Class ------------------------------------------------- #
 
 ##
 func add(id: int, user: String, form: String):
 	MEMBERS[id] = Member.new(user, form)
 
 
-# Member Class --------------------------------------------------------------- #
+## 
+func clear(): MEMBERS.clear()
+
+
+## Returns the number of users currently with the user.
+func count() -> int: return MEMBERS.size()
+
 
 ## Template for handling [b]members[/b] in a lobby.
 class Member:
