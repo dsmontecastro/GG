@@ -57,7 +57,7 @@ offset_right = 3840.0
 visible = false
 layout_mode = 0
 
-[connection signal="resized" from="." to="." method="_resize"]
+[connection signal="pressed" from="Main/VBox/Buttons/VBox/Test" to="." method="_test"]
 [connection signal="pressed" from="Main/VBox/Buttons/VBox/Find" to="." method="find"]
 [connection signal="pressed" from="Main/VBox/Buttons/VBox/Make" to="." method="toggle_make"]
 [connection signal="pressed" from="Main/VBox/Buttons/VBox/Opts" to="." method="toggle_opts"]

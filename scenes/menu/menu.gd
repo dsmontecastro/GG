@@ -34,11 +34,11 @@ func _reset():
 func _play(msg: String):
 	print(msg)
 	print(LOBBY._debug() + '\n')
-	#LOADER.change_scene_to_file(LOADER.SCENE['GAME'])
+	LOADER.load_to(LOADER.SCENE_NAMES.GAME)
 
 
 ## [TEST] For debugging; skips the matchmaking processes and starts the [Game].
-func _test(): SIGNALS.emit_signal(SIGNALS.GAME.PLAY, 'DEBUG')
+func _test(): SIGNALS.menu_play.emit('DEBUG')
 
 
 #  Screen Transitions -------------------------------------------------------- #
