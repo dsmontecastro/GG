@@ -16,7 +16,7 @@ func _ready():
 ## (Re)sets [member P2P.ENEMY_ID] from [member LOBBY.MEMBERS].
 func _start():
 	_reset()
-	for id in LOBBY.MEMBERS:
+	for id in ROOM.MEMBERS:
 		if id != USER.ID:
 			ENEMY_ID = id
 			break
@@ -34,7 +34,7 @@ func _process(_d): Steam.run_callbacks()
 
 ## Performs a P2P 'handshake' with all other [member ROOM.MEMBERS].
 func handshake():
-	for ID in LOBBY.MEMBERS:
+	for ID in ROOM.MEMBERS:
 		if ID != USER.ID: send(P2P.MSSG.HANDSHAKE)
 
 
@@ -78,7 +78,7 @@ func send(type: TYPE = TYPE.NULL, success = true):
 ## Reads and processses a received [b] [Steam] packet[/b].
 func read() -> Message:
 
-	var data: Message = Message.new()
+	var msg: Message = Message.new()
 	var size := Steam.getAvailableP2PPacketSize(PORT)
 
 	if size > 0:
@@ -87,12 +87,11 @@ func read() -> Message:
 
 		if !packet or packet.is_empty(): SIGNALS.error.emit(NULL)
 
-		elif packet['steam_id_remote'] in LOBBY.MEMBERS:
-			data.unpack(packet[data])
+		elif packet.steam_id_remote in ROOM.MEMBERS: msg.unpack(packet.data)
 
 		else: SIGNALS.error.emit('[WARNING] Unknown user detected!')
 
-	return data
+	return msg
 
 
 # Message Class -------------------------------------------------------------- #
@@ -110,13 +109,20 @@ class Message:
 
 	# Properties and Contructors --------------------------------------------- #
 
-	var type: TYPE		## Message [enum Message.TYPE]
-	var value: bool		## Message value
+	var type: TYPE			## Message [enum Message.TYPE]
+	var data: Variant		## Message data
+	var message: bool		## Message contents
+	var empty := true		## Message is empty or not
 
 
-	func _init(d_value: bool = false, d_type: TYPE = TYPE.NULL):
-		value = d_value
-		type = d_type
+	# Core Methods ----------------------------------------------------------- #
+
+	func _init(_data: Variant = null, _type: TYPE = TYPE.NULL):
+		if type != TYPE.NULL:
+			empty = false
+			data = _data
+			type = _type
+
 
 	# Conversions to-or-from Packets ----------------------------------------- #
 
@@ -126,15 +132,19 @@ class Message:
 
 
 	## Unpacks the given [param data], setting the appropriate properties.
-	func unpack(data: Dictionary):
-		for key in data: set(key, data[key])
+	func unpack(bytes: PackedByteArray):
+		var dict: Dictionary = bytes_to_var(bytes)
+		if dict:
+			for key in data:
+				print(key)
+				set(str(key), data[key])
 
 
 	## Outputs a [Dictionary] of all properties and their values.
 	func to_dict() -> Dictionary:
-		var data = {}
+		var dict = {}
 		for prop in get_property_list():
-			var key = prop['name']
+			var key = prop.name
 			var val = get(key)
-			if value: data[key] = val
-		return data
+			if val: dict[key] = val
+		return dict
