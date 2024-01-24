@@ -1,0 +1,120 @@
+[gd_scene load_steps=5 format=3 uid="uid://d4dn6mo0pg3bc"]
+
+[ext_resource type="Script" path="res://scenes/game/components/sidebar/components/profile/profile.gd" id="1_27p3t"]
+[ext_resource type="Texture2D" uid="uid://b7ij8s6dc2oqf" path="res://icon.svg" id="1_cno28"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xoo75"]
+bg_color = Color(0.176471, 0.176471, 0.176471, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8x2q6"]
+bg_color = Color(1, 1, 1, 1)
+
+[node name="Profile" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 150)
+offset_right = 640.0
+offset_bottom = 166.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xoo75")
+script = ExtResource("1_27p3t")
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Team" type="Panel" parent="HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8x2q6")
+
+[node name="VBox" type="VBoxContainer" parent="HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Top" type="BoxContainer" parent="HBox/VBox"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="HBox/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Left" type="BoxContainer" parent="HBox/VBox/HBox"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Text" type="VBoxContainer" parent="HBox/VBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Name" type="Label" parent="HBox/VBox/HBox/Text" groups=["ProfileText"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "<insert_steam_name>"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Mid" type="BoxContainer" parent="HBox/VBox/HBox/Text"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="HBox/VBox/HBox/Text"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 2
+
+[node name="Forfeit" type="Button" parent="HBox/VBox/HBox/Text/Buttons" groups=["ProfileText"]]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = " FORFEIT "
+
+[node name="1" type="BoxContainer" parent="HBox/VBox/HBox/Text/Buttons"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Ready" type="Button" parent="HBox/VBox/HBox/Text/Buttons" groups=["ProfileText"]]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = " READY "
+
+[node name="2" type="BoxContainer" parent="HBox/VBox/HBox/Text/Buttons"]
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Reset" type="Button" parent="HBox/VBox/HBox/Text/Buttons" groups=["ProfileText"]]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = " RESET "
+
+[node name="Mid" type="BoxContainer" parent="HBox/VBox/HBox"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="HBox/VBox/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+texture = ExtResource("1_cno28")
+
+[node name="Right" type="BoxContainer" parent="HBox/VBox/HBox"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Bot" type="BoxContainer" parent="HBox/VBox"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+alignment = 1

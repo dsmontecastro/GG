@@ -31,15 +31,16 @@ func reset_arr():
 
 func cell_empty(x: int, y: int) -> bool: return ARRAY[y][x] == null
 
-func is_clear(arr: Array) -> bool:
+func is_clear() -> bool:
 	for row in ARRAY:
-		if !row.all(null): return false
+		for col in row:
+			if col: return false
 	return true
 
 
 # Grid-to-Position (Transposed) ---------------------------------------------- #
 
-func get_grid_idx(pos: Vector2): return self.local_to_map(pos)
+func get_grid_idx(pos: Vector2) -> Vector2i: return self.local_to_map(pos)
 
 func get_grid_pos(x: int, y: int) -> Vector2:	
 	var pos = self.map_to_local(Vector2(y, x))

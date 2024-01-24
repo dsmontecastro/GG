@@ -1,0 +1,92 @@
+[gd_scene load_steps=2 format=3 uid="uid://xnskmapi70al"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c2qso"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.0941176, 0.0941176, 0.0941176, 1)
+
+[node name="Chat" type="HBoxContainer"]
+custom_minimum_size = Vector2(640, 682)
+size_flags_vertical = 3
+
+[node name="Left" type="BoxContainer" parent="."]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+
+[node name="BG" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="BG"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="BG"]
+layout_mode = 2
+
+[node name="Chat" type="PanelContainer" parent="BG/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="BG/VBox/Chat"]
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="BG/VBox/Chat"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ChatWall" type="VBoxContainer" parent="BG/VBox/Chat/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ChatItem" type="Label" parent="BG/VBox/Chat/Scroll/ChatWall"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "test
+"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Chatbox" type="VBoxContainer" parent="BG/VBox"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+
+[node name="Top" type="BoxContainer" parent="BG/VBox/Chatbox"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="BG/VBox/Chatbox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Left" type="BoxContainer" parent="BG/VBox/Chatbox/HBox"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="Send" type="Button" parent="BG/VBox/Chatbox/HBox"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+size_flags_vertical = 4
+text = " SEND "
+
+[node name="Mid" type="BoxContainer" parent="BG/VBox/Chatbox/HBox"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="Message" type="TextEdit" parent="BG/VBox/Chatbox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_c2qso")
+placeholder_text = "Send a message..."
+wrap_mode = 1
+scroll_smooth = true
+
+[node name="Right" type="BoxContainer" parent="BG/VBox/Chatbox/HBox"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="Bot" type="BoxContainer" parent="BG/VBox/Chatbox"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2

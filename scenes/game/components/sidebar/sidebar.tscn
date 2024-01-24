@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://dmemari0tro7y"]
+
+[ext_resource type="Script" path="res://scenes/game/components/sidebar/sidebar.gd" id="1_50fwd"]
+[ext_resource type="PackedScene" uid="uid://d4dn6mo0pg3bc" path="res://scenes/game/components/sidebar/components/profile/profile.tscn" id="1_b4bew"]
+[ext_resource type="PackedScene" uid="uid://xnskmapi70al" path="res://scenes/game/components/sidebar/components/chat/chat.tscn" id="3_wa88d"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vyicx"]
+bg_color = Color(0.176471, 0.176471, 0.176471, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1lij"]
+bg_color = Color(0.176471, 0.176471, 0.176471, 1)
+
+[node name="Sidebar" type="MarginContainer"]
+offset_left = 1250.0
+offset_right = 1890.0
+offset_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_50fwd")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+alignment = 1
+
+[node name="Top" type="BoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+alignment = 1
+
+[node name="White" parent="VBox" instance=ExtResource("1_b4bew")]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vyicx")
+
+[node name="Chat" parent="VBox" instance=ExtResource("3_wa88d")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Black" parent="VBox" instance=ExtResource("1_b4bew")]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_m1lij")
+
+[node name="Bot" type="BoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+alignment = 1
+
+[editable path="VBox/White"]

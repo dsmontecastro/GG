@@ -19,18 +19,25 @@ func toggle_cell(coords: Vector2i):
 
 
 
+enum LAYERS { BASE, BOARD }
 const COLORS = {
 	DEF = Color(0,0,0,0),
 	DARK = Color(0,0,0,0.5),
 	LITE = Color(1,1,1,0.5)
 }
 
-func reset(): self.modulate = Color(0,0,0,0)
+func reset(): set_layer_modulate(LAYERS.BOARD, COLORS.DEF)
+func darken(): set_layer_modulate(LAYERS.BOARD, COLORS.DARK)
+func lighten(): set_layer_modulate(LAYERS.BOARD, COLORS.LITE)
+
 func toggle():
-	if self.modulate == COLORS.DARK:
-		self.modulate = COLORS.LITE
-	else: self.modulate = COLORS.DARK
+
+	var color = COLORS.DEF
+	var curr = get_layer_modulate(LAYERS.BOARD)
+
+	if curr == COLORS.DARK: color = COLORS.LITE
+	elif curr == COLORS.LITE: color = COLORS.DARK
+	
+	set_layer_modulate(LAYERS.BOARD, color)
 	print("%s: %s" % [self.name, self.modulate])
 	
-func darken(): self.modulate = Color(0,0,0,0.5)
-func lighten(): self.modulate = Color(1,1,1,0.5)

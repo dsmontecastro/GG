@@ -4,7 +4,7 @@ class_name Unit
 
 # Initializing References ----------------------------------------------------------------------- #
 
-var Board = null
+var BOARD = null
 var Grid = null
 var Anim = null
 var Kill = null
@@ -20,8 +20,8 @@ func _init():
 
 	Grid = get_parent()
 	if Grid != null:
-		Board = Grid.get_parent()
-	else: Board = null
+		BOARD = Grid.get_parent()
+	else: BOARD = null
 
 
 # Basic Functions ------------------------------------------------------------------------------- #
@@ -55,7 +55,7 @@ func swap_team():
 	swap_color()
 	if TYPE != 1: set_dir(PI)
 
-const invertModulate = Color(0.25, 0.25, 0.25)	# Matches Board Color
+const invertModulate = Color(0.25, 0.25, 0.25)	# Matches BOARD Color
 var invertMaterial = load("res://assets/shaders/invert/invert.material")
 
 func swap_color():
@@ -133,10 +133,10 @@ func move(cell: Vector2):
 
 	if Grid == null:
 		Grid = get_parent()
-		Board = Grid.get_parent()
+		BOARD = Grid.get_parent()
 
 	var tween = create_tween()
-	var movement = Grid.map_to_local(cell) + Board.tileHalf
+	var movement = Grid.map_to_local(cell) + BOARD.tileHalf
 	tween.tween_property(self, "position", movement, 0.25)
 
 	await tween.finished
