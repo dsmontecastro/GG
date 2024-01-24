@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://bl8yj5efuimdv"]
+
+[ext_resource type="Script" path="res://scenes/globals/loader/loader.gd" id="1_tsykk"]
+[ext_resource type="SpriteFrames" uid="uid://dw88as7h8kpkc" path="res://assets/sprites/globals/loader/transitions.tres" id="2_k7hvn"]
+[ext_resource type="Script" path="res://scenes/globals/loader/anim.gd" id="3_xq1fb"]
+
+[node name="Loader" type="CanvasLayer"]
+layer = 15
+script = ExtResource("1_tsykk")
+
+[node name="Anim" type="AnimatedSprite2D" parent="."]
+position = Vector2(960.001, 540.001)
+scale = Vector2(1.875, 1.8)
+sprite_frames = ExtResource("2_k7hvn")
+animation = &"pixel"
+script = ExtResource("3_xq1fb")
