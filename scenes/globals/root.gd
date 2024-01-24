@@ -13,9 +13,9 @@ func quit():
 
 ## Creates an empty array with the given [param rows] and [param cols].[br]
 ## Each cell will be instantiated with the supplied [param filler].
-func make_arr(rows: int, cols: int, filler = null) -> Array:
+func make_arr(rows: int, cols: int, filler = null) -> Array[Array]:
 
-	var arr = []
+	var arr: Array[Array] = []
 	for _r in range(rows):
 		var row = []
 		row.resize(cols)

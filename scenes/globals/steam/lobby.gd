@@ -215,7 +215,7 @@ func join_status(id: int, _permissions: int, _locked: bool, response: int):
 
 		ROOM.ID = id
 		ROOM.NAME = Steam.getLobbyData(id, 'name')
-		FIND = MODE[Steam.getLobbyData(id, 'mode')]
+		FIND = int(Steam.getLobbyData(id, 'mode')) as MODE
 
 		Steam.setLobbyMemberData(id, 'form', '')
 		update_members()
