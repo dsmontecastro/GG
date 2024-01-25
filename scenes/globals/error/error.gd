@@ -2,6 +2,7 @@ extends Popup
 class_name Error
 ## A global pop-up to display any error code and message.
 
+
 ## The default [b]error message[/b] to display.
 const DEF_MSG = "An unknown error has occurred."
 

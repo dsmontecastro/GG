@@ -15,9 +15,8 @@ var LOADING := false
 # Core Functions ------------------------------------------------------------- #
 
 func _ready():
-	#self.animation_finished.connect(transition)
 	self.animation_finished.connect(anim_finished)
-	SIGNALS.loading_scene.connect(load_finished)
+	SIGNALS.loading_scene.connect(is_loading)
 
 
 ## Swaps to and plays a random [member AnimatedSprite2D.animation]
@@ -40,25 +39,27 @@ func swap():
 	animation = TRANSITIONS[id]
 
 
-## Emits the appropriate signal after an animation has finished playing.
-func load_finished(val: bool):
+## Controller for [member LoaderAnim.LOADING], triggered by
+## [signal SIGNALS.loading_scene] when [LOADER] is attempting to change scene.
+func is_loading(val: bool):
 	LOADING = val
 	transition()
 
 
-## 
+## Triggered when the current animation has stopped playing.[br]
+## Emits [signal SIGNALS.loading_covered] & [method LoaderAnim.transition]s out
+## if the animation is currently "transitioning in".[br]
+## Otherwise, [method AnimatedSprite2D.stop]s the animations.
 func anim_finished():
-	if frame == 0:
-		hide()
-		stop()
+	if frame == 0: stop()
 	else:
-		SIGNALS.loading_covered.emit()
+		SIGNALS.loader_covered.emit()
 		transition()
 
 
-## 
+## If no animation is currently playing, plays the appropriate animation [br]
+## based on the [member LoaderAnim.LOADING] state.
 func transition():
 	if not is_playing():
-		show()
 		if LOADING: _start()
 		else: _reset()

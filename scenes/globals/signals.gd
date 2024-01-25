@@ -20,7 +20,7 @@ signal join_response(success: bool, message: String)	## Response to a [b]join[/b
 
 # Loader --------------------------------------------------------------------- #
 
-signal loading_covered				## [LoaderAnim] has covered the screen.
+signal loader_covered				## [LoaderAnim] has covered the screen.
 signal loading_scene(val: bool)		## [LOADER] state has started or finished processing a scene.
 
 

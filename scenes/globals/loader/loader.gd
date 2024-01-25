@@ -1,24 +1,24 @@
 extends CanvasLayer
-## 
+## Responsible for loading in and transitioning between scenes.
+
 
 # Memeber Scenes
 @onready var ANIM: LoaderAnim = $Anim
 
 
-# Scene Management ----------------------------------------------------------- #
-
-##
-var TARGET_SCENE: SceneResource = null
-
-
-##
+## Dictionary keys for [member LOADER.SCENES].
 enum SCENE_NAMES { MENU, GAME }
 
-## 
+
+## Dictionary of [class LOADER.SceneResource]s.
 var SCENES: Dictionary = {
 	MENU = SceneResource.new('res://scenes/menu/menu.tscn'),
 	GAME = SceneResource.new('res://scenes/game/game.tscn'),
 }
+
+
+## The [class LOADER.SceneResource] to be switched to, if ever.
+var TARGET_SCENE: SceneResource = null
 
 
 # Core Functions ------------------------------------------------------------- #
@@ -43,12 +43,14 @@ func _process(_d):
 
 # Resource Loading ----------------------------------------------------------- #
 
-## 
+## Translate an item from [enum LOADER.SCENE_NAMES] to its key as a [String].
 func get_scene_name(target: SCENE_NAMES) -> String:
 	return SCENE_NAMES.keys()[target]
 
 
-## 
+## Prepates to load in a valid [memeber LOADER.TARGET_SCENE]
+## from [member LOADER.SCENES].[br]
+## Also alerts [LoaderAnim] to [method LoaderAnim.transition] in.
 func load_to(target: SCENE_NAMES):
 	
 	var resource: String = get_scene_name(target)
@@ -62,15 +64,19 @@ func load_to(target: SCENE_NAMES):
 	else: print('[%s] Scene is not yet loaded.' % resource)
 
 
-##
+## Loads the [member LOADER.TARGET_SCENE] after [signal SIGNALS.loading_covered]
+## has been emitted, obscuring the viewport.[br]
+## A null or invalid scene will be ignored.[br]
+## Lastly, alerts [LoaderAnim] to [method LoaderAnim.transition] out.
 func load_in():
 	if TARGET_SCENE:
 		get_tree().call_deferred('change_scene_to_packed', TARGET_SCENE.resource)
-		SIGNALS.loading_scene.emit(false)
 		TARGET_SCENE = null
+	SIGNALS.loading_scene.emit(false)
 
 
-## 
+## Checks to see if all [class LOADER.SceneResources] in [member LOADER.SCENES]
+## have finished loading.
 func check_progress() -> bool:
 
 	for resource in SCENES:
@@ -84,33 +90,39 @@ func check_progress() -> bool:
 
 # Scene Resource class ------------------------------------------------------- #
 
-## 
+## Template for handling storing [b]scenes[/b] in [LOADER].
 class SceneResource:
 
-	var path: String
-	var resource: Resource
-	var loaded := false
+	var path: String			## Path to resource to be loaded
+	var resource: Resource		## Actual [Resource] object
+	var loaded := false			## Indicator for a "finished" loading state
 
 
-	## 
-	func _init(file_path: String): path = file_path
+	## Sets the proper [member LOADER.SceneResource.path].[br]
+	## If invalid, this object will display an [Error] and delete itself.
+	func _init(file_path: String):
+		if FileAccess.file_exists(file_path): path = file_path
+		else:
+			_err('No such file exists...')
+			free()
 
 
 	## Display an [Error] page along with the appropriate message.
 	func _err(msg: String): SIGNALS.error.emit(msg)
 
 
-	## 
+	##  Performs a threaded load on the [member LOADER.SceneResource.path].
 	func load_in(): ResourceLoader.load_threaded_request(path)
 
 
-	## 
+	##  Performs a non-threaded load on the [member LOADER.SceneResource.path].
 	func load_forced():
 		resource = ResourceLoader.load(path)
 		loaded = true
 
 
-	## 
+	## Checks for and updates the [member LOADER.SceneResource.loaded] status
+	## based on the [method ResourceLoader.load_threaded_get_status] results.
 	func load_status() -> bool:
 
 		var progress := []
@@ -121,12 +133,10 @@ class SceneResource:
 
 			ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
 				var msg := 'Unable to load the resource from "%s".' % path
-				print(msg)
 				_err(msg)
 
 			ResourceLoader.THREAD_LOAD_FAILED:
 				var msg := 'Issue occured while loading files from "%s".' % path
-				print(msg)
 				_err(msg)
 
 			ResourceLoader.THREAD_LOAD_IN_PROGRESS:

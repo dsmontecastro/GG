@@ -30,14 +30,15 @@ func _reset():
 		screen._reset()
 
 
-## Starts the [Game] proper, along with a [param message] for debugging.
-func _play(msg: String):
-	print(msg)
+## Requests the [LOADER] to transition to the [Game] scene.[br]
+## Use the [param message] for debugging.
+func _play(message: String = ''):
+	if message: print(message)
 	print(LOBBY._debug() + '\n')
 	LOADER.load_to(LOADER.SCENE_NAMES.GAME)
 
 
-## [TEST] For debugging; skips the matchmaking processes and starts the [Game].
+## [TEST] For debugging; immediately attempt to use [method Menu._play].
 func _test(): SIGNALS.menu_play.emit('DEBUG')
 
 
