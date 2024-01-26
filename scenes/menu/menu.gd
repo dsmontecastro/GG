@@ -2,6 +2,7 @@ extends Control
 class_name Menu
 ## [Menu]-Controller class, used to control its multiple children components.
 
+
 # Member Scenes
 @onready var FIND: FindScreen = $Find
 @onready var MAIN: MainScreen = $Main

@@ -25,7 +25,7 @@ var TARGET_SCENE: SceneResource = null
 
 func _ready():
 	
-	SIGNALS.loading_covered.connect(load_in)
+	SIGNALS.loader_covered.connect(load_in)
 	SCENES.MENU.load_forced()
 
 	for resource in SCENES:

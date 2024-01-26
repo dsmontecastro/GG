@@ -13,7 +13,7 @@ func _ready():
 	Steam.p2p_session_request.connect(on_request)
 
 
-## (Re)sets [member P2P.ENEMY_ID] from [member LOBBY.MEMBERS].
+## (Re)Sets [member P2P.ENEMY_ID] from [member LOBBY.MEMBERS].
 func _start():
 	_reset()
 	for id in ROOM.MEMBERS:
