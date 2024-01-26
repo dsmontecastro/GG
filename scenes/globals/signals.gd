@@ -36,20 +36,27 @@ signal menu_reset(message: String)	## Reset the [Menu] and its components.
 signal menu_play(message: String)	## Transition from [Menu] to [Game].
 
 
-# Game Setup ---------------------------------------------------------------- #
+# Game Setup ----------------------------------------------------------------- #
 
-signal setup_reset			## [TODO]
-signal setup_ready(val)		## [TODO]
-signal setup_finished		## [TODO]
-signal all_ready			## [TODO]
+signal game_reset(base: String)		## Resets relevant [Game] components.
+signal game_setup(val: bool)		## Signals that [USER] is ready.
+signal game_ready(val: bool)		## Verifies that [USER] if actually ready.
+signal game_start					## Attempts to start the [Game] proper.
+
+## Drags a [Draggable] to the given [param pos], if valid.
+## Attemps to [method Draggable.drag] a [Unit] to a [param position].
+signal drag_to(unit: Draggable, pos: Vector2)
 
 
-# Game Proper --------------------------------------------------------------- #
+# Game Proper ---------------------------------------------------------------- #
 
-signal game_play		## [TODO]
-signal game_over(win)	## [TODO]
-signal swap_turn(val)	## [TODO]
+signal swap_turn(val)					## [TODO]
+signal game_over(win)					## [TODO]
+signal forfeit							## [TODO]
 
-signal move()			## [TODO]
-signal move_done		## [TODO]
-signal kill_done		## [TODO]
+
+# Unit ----------------------------------------------------------------------- #
+
+signal move(unit: Unit, pos: Vector2)	## [TODO]
+signal has_moved						## [TODO]
+signal has_died							## [TODO]

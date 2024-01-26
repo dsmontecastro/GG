@@ -126,21 +126,22 @@ class Message:
 
 	# Conversions to-or-from Packets ----------------------------------------- #
 
-	## Packs the properties into a [PackedByteArray] object.
+	## Packs the class properties into a [PackedByteArray] object.
 	func pack() -> PackedByteArray:
 		return var_to_bytes(to_dict())
 
 
-	## Unpacks the given [param data], setting the appropriate properties.
+	## Unpacks the given [param bytes], setting the appropriate properties.
 	func unpack(bytes: PackedByteArray):
 		var dict: Dictionary = bytes_to_var(bytes)
 		if dict:
 			for key in data:
 				print(key)
 				set(str(key), data[key])
+		else: empty = true
 
 
-	## Outputs a [Dictionary] of all properties and their values.
+	## Outputs a [Dictionary] of all class properties and their values.
 	func to_dict() -> Dictionary:
 		var dict = {}
 		for prop in get_property_list():
