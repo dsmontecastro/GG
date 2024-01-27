@@ -2,7 +2,6 @@ extends Node
 ## Represents the current lobby or the [ROOM] the user belongs to.
 
 
-# Trackers for current ROOM (separate from the LOBBY singleton).
 var ID := 0						## Tracker for the current lobby's ID.
 var NAME := ''					## Tracker for the current lobby's name.
 var MEMBERS: Dictionary = {}	## Tracker for the current lobby's members.
@@ -36,12 +35,12 @@ func _leave():
 
 # Members Handling ----------------------------------------------------------- #
 
-##
+## Adds [class ROOM.Memeber] with the given parameters.
 func add(id: int, user: String, form: String):
-	MEMBERS[id] = Member.new(user, form)
+	if id > 0 and user: MEMBERS[id] = Member.new(user, form)
 
 
-## 
+## Clears the [member ROOM.MEMBERS] dictionary.
 func clear(): MEMBERS.clear()
 
 

@@ -38,9 +38,9 @@ signal menu_play(message: String)	## Transition from [Menu] to [Game].
 
 # Game Setup ----------------------------------------------------------------- #
 
-signal game_reset(base: String)		## Resets relevant [Game] components.
+signal game_readied(val: bool)		## Verifies that [USER] if actually ready.
 signal game_setup(val: bool)		## Signals that [USER] is ready.
-signal game_ready(val: bool)		## Verifies that [USER] if actually ready.
+signal game_reset					## Resets relevant [Game] components.
 signal game_start					## Attempts to start the [Game] proper.
 
 ## Drags a [Draggable] to the given [param pos], if valid.
