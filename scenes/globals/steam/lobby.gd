@@ -1,19 +1,20 @@
 extends Node
 
 
-# Lobby Types
+# Enumerations
 enum TYPE { PRIVATE, FRIENDS, PUBLIC, INVISIBLE }	## Shortcut for [enum Steam.LobbyType].
 enum DIST { CLOSE, DEF, FAR, GLOBAL }				## Shortcut for [enum Steam.LobbyDistanceFilter].
-enum MODE { AUTO, MANUAL }							## Custom modes used in matchmaking.
+enum META { NAME, HOST, MODE, FORM }				## Custom types used in user and lobby metadata.
+enum MODE { AUTO, MANUAL }							## Custom modes used in lobby matchmaking.
 
 # Constants
-const TAG := '[GoG] '							## Tag to precede any lobby name.
-const MAX_MEMBERS := 2							## Maximum amount of players in a lobby.
-const FILTER_GTE := 2 as Steam.LobbyComparison	## Shortcut for '>=' (missing from autocomplete).
-const FILTER_EQ := 0 as Steam.LobbyComparison	## Shortcut for '=='.
+const TAG = '[GoG] '							## Tag to precede any lobby name.
+const MAX_MEMBERS = 2							## Maximum amount of players in a lobby.
+const FILTER_GTE = 2 as Steam.LobbyComparison	## Shortcut for '>=' (missing from autocomplete).
+const FILTER_EQ = 0 as Steam.LobbyComparison	## Shortcut for '=='.
 
 # Trackers
-var FIND: MODE = MODE.AUTO		## Tracker for the current Find-[enum MODE].
+var FIND := MODE.AUTO		## Tracker for the current Find-[enum MODE].
 
 
 # Core Functions ------------------------------------------------------------- #
@@ -66,9 +67,9 @@ func _debug():
 		var info = [id]
 		info.append(Steam.getNumLobbyMembers(id))
 		info.append(Steam.getLobbyMemberLimit(id))
-		info.append(Steam.getLobbyData(id, 'mode'))
-		info.append(Steam.getLobbyData(id, 'name'))
-		info.append(Steam.getLobbyData(id, 'host'))
+		info.append(Steam.getLobbyData(id, str(META.NAME)))
+		info.append(Steam.getLobbyData(id, str(META.HOST)))
+		info.append(Steam.getLobbyData(id, str(META.MODE)))
 
 		return '%d (%d/%d) [%s]: \'%s\' by %s' % info
 
@@ -91,6 +92,7 @@ func data_update(success: int, id: int, userID: int):
 
 		if success: message += 'successful!'
 		else: message += 'failed...'
+		print(message)
 
 		update_members()
 		SIGNALS.data_update.emit(success, message)
@@ -110,6 +112,7 @@ func users_update(_id: int, changedID: int, _changerID: int, state: int):
 		08: message.replace('_', 'been kicked from')
 		16: message.replace('_', 'been banned from')
 		_:  message = '%s has done... something.' % changedName
+	print(message)
 
 	update_members()
 	SIGNALS.room_update.emit(state, message)
@@ -126,7 +129,7 @@ func update_members():
 	for index in range(0, count):
 		var userID = Steam.getLobbyMemberByIndex(id, index)
 		var userName = Steam.getFriendPersonaName(userID)
-		var userForm = Steam.getLobbyMemberData(id, userID, 'form')
+		var userForm = Steam.getLobbyMemberData(id, userID, str(META.FORM))
 		ROOM.add(userID, userName, userForm)
 
 
@@ -165,12 +168,11 @@ func host_status(connection: int, id: int):
 
 		ROOM.ID = id
 		USER.HOSTING = true
-		USER.IS_TURN = true
 		if !ROOM.NAME: ROOM.NAME = str(id)
 
-		Steam.setLobbyData(id, 'name', TAG + ROOM.NAME)
-		Steam.setLobbyData(id, 'host', USER.NAME)
-		Steam.setLobbyData(id, 'mode', str(FIND))
+		Steam.setLobbyData(id, str(META.NAME), TAG + ROOM.NAME)
+		Steam.setLobbyData(id, str(META.HOST), USER.NAME)
+		Steam.setLobbyData(id, str(META.MODE), str(FIND))
 		Steam.setLobbyJoinable(id, true)
 		Steam.allowP2PPacketRelay(true)
 
@@ -214,10 +216,10 @@ func join_status(id: int, _permissions: int, _locked: bool, response: int):
 			_leave()
 
 		ROOM.ID = id
-		ROOM.NAME = Steam.getLobbyData(id, 'name')
-		FIND = int(Steam.getLobbyData(id, 'mode')) as MODE
+		ROOM.NAME = Steam.getLobbyData(id, str(META.NAME),)
+		FIND = int(Steam.getLobbyData(id, str(META.MODE),)) as MODE
 
-		Steam.setLobbyMemberData(id, 'form', '')
+		Steam.setLobbyMemberData(id, str(META.FORM), '')
 		update_members()
 		P2P.handshake()
 
@@ -240,14 +242,20 @@ func join_status(id: int, _permissions: int, _locked: bool, response: int):
 
 # Gameplay Functions --------------------------------------------------------- #
 
+## 
+func setup(form: String):
+	Steam.setLobbyData(ROOM.ID, str(META.FORM), form)
+
+
 ## Checks to see if all members are 'ready' to start the [Game].
-func all_ready():
+func all_ready() -> bool:
 	
 	var id := ROOM.ID
 
 	if Steam.getNumLobbyMembers(id) < MAX_MEMBERS: return false
 
 	for userID in ROOM.MEMBERS:
-		var form := Steam.getLobbyMemberData(id, userID, 'form')
+		var form := Steam.getLobbyMemberData(id, userID, str(META.FORM))
 		if not form: return false
+
 	return true
