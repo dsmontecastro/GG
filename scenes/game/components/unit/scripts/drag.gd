@@ -6,37 +6,30 @@ class_name Draggable
 
 # Constants
 const INPUT = 'Click'
-const UNITS = 'Units'
-const ALLIES = 'Allies'
 
-
-## Parent Base
-@onready var BASE: Base = get_parent()
-
-
-## Initial global position where the [Unit] is spawned from.
-@onready var START := global_position
-
-
-## Global position to [method Draggable.snap_back] to.
-@onready var ORIGIN := START
+# Trackers
+@onready var BASE: TileMap = get_parent()	## Parent [TileMap]
+@onready var START := global_position		## Initial global position where the [Unit] is spawned from.
+@onready var ORIGIN := START				## Global position to [method Draggable.snap_back] to.
 
 
 # Core Functions ------------------------------------------------------------- #
 
 func _ready():
 	self.input_event.connect(drag)
-	add_to_group(ALLIES, true)
-	add_to_group(UNITS, true)
+	add_to_group(GROUPS.UNIT, true)
+	add_to_group(GROUPS.ALLY, true)
 	set_process(false)
 
 
-## Moves the [Unit] back to its [member DRAG.START] position.
-func _start(): set_global_position(START)
-
-
 ## Disables the ability to do [method Draggable.drag] this [Unit].
-func _reset(): self.input_event.disconnect(drag)
+func _start(): self.input_event.disconnect(drag)
+
+
+## Moves the [Unit] back to its [member DRAG.START] position.
+func _reset(): 
+	super._reset()
+	set_global_position(START)
 
 
 ## When enabled, binds the [Unit] to the global mouse position.
@@ -60,13 +53,13 @@ func shadow(val: bool):
 
 	if val:
 		ANIM.z_index = 15
-		if UNITS in get_groups():
-			remove_from_group(UNITS)
+		if GROUPS.UNIT in get_groups():
+			remove_from_group(GROUPS.UNIT)
 	else:
 		ANIM.z_index = 0
-		add_to_group(UNITS)
+		add_to_group(GROUPS.UNIT)
 
-	get_tree().call_group(UNITS, 'mouse_toggle', !val)
+	get_tree().call_group(GROUPS.UNIT, 'mouse_toggle', !val)
 	set_process(val)
 
 

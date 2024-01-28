@@ -1,70 +1,89 @@
 extends Area2D
 class_name Unit
+##
 
 
-# Initializing References ----------------------------------------------------------------------- #
+# Enumerations
+enum TEAMS { BLACK = -1, NONE = 0, WHITE = 1 }
 
-var BOARD = null
-var Grid = null
-var Anim = null
-var Kill = null
-var Filter = null
-var Glitch = null
+# Constants
+const TYPES = 16
+const GROUPS := {
+	UNIT = 'Unit',
+	ALLY = 'Ally',
+	ENEMY = 'Enemy',
+}
 
-func _init():
+# Exports
+@export_range(0, TYPES) var TYPE := 0	## Ranges from 0 to [enum Unit.TYPES].
+@export var TEAM := TEAMS.NONE			## Choose from [enum Unit.TEAMS].
 
-	Anim = $Anim
-	Kill = $Kill
-	Filter = $Filters
-	Glitch = $Filters/Glitch
-
-	Grid = get_parent()
-	if Grid != null:
-		BOARD = Grid.get_parent()
-	else: BOARD = null
+# Member Senes
+@onready var AREA: CollisionShape2D = $Area
+@onready var ANIM: AnimatedSprite2D = $Anim
+@onready var KILL: AnimatedSprite2D = $Kill
+@onready var FILTERS: Node2D = $Filters
+@onready var MOVES: TileMap = $Moves
 
 
-# Basic Functions ------------------------------------------------------------------------------- #
+# Core Functions ------------------------------------------------------------- #
 
 func _ready():
-	connect("mouse_entered", Callable(self, "mouse_in"))
-	connect("mouse_exited", Callable(self, "mouse_out"))
-	add_to_group("Units", true)
-	randomize()
-	_init()
+	self.mouse_entered.connect(mouse_in)
+	self.mouse_exited.connect(mouse_out)
+	add_to_group(GROUPS.UNIT, true)
+	swap_team(TEAM)
+	set_type(TYPE)
 
 func _start(): pass
-func _reset(): pass
+
+func _reset():
+	set_type(TYPE)
+	set_team(TEAM)
+	if TEAM == TEAMS.BLACK: swap_team()
+	rescale(NORMAL)
 
 
-# Type & Team Setting --------------------------------------------------------------------------- #
+# Type & Team Configuration -------------------------------------------------- #
 
-var TEAM: int = 1
-var TYPE: int = 0
-const TYPES: int = 16
-
+## 
 func set_type(val: int):
-	TYPE = val
-	if val <= 0: val = 0
+	TYPE = clamp(val, 0, TYPES)
 	swap_anim(val)
 
-func set_team(val: int): TEAM = val
 
-func swap_team():
-	TEAM *= -1
-	swap_color()
-	if TYPE != 1: set_dir(PI)
+## 
+func set_team(team: TEAMS): TEAM = team
+
+
+## 
+func swap_team(team: TEAMS = TEAMS.NONE):
+
+	if TEAM != TEAMS.NONE:
+		TEAM = (TEAM * -1) as TEAMS
+		swap_color()
+		if TYPE > 1: set_dir(PI)
+
+	else:
+		TEAM = team
+		if team == TEAMS.BLACK: swap_color()
+
+
+func copy(unit: Unit):
+	set_type(unit.TYPE)
+	set_team(unit.TEAM)
+
 
 const invertModulate = Color(0.25, 0.25, 0.25)	# Matches BOARD Color
-var invertMaterial = load("res://assets/shaders/invert/invert.material")
+var invertMaterial = load('res://assets/shaders/invert/invert.material')
 
 func swap_color():
-	Anim.material = invertMaterial
-	Anim.modulate = invertModulate
-	Anim.visible = true
+	ANIM.material = invertMaterial
+	ANIM.modulate = invertModulate
+	#ANIM.visible = true
 
 
-# Mouse Handling -------------------------------------------------------------------------------- #
+# Mouse Inputs --------------------------------------------------------------- #
 
 func mouse_in():
 	rescale(BIGGER)
@@ -87,26 +106,26 @@ const BIGGER = NORMAL * 1.1
 
 func rescale(val: Vector2):
 	var tween = create_tween()
-	tween.tween_property(Anim, "scale", val, 0.25)
+	tween.tween_property(ANIM, 'scale', val, 0.25)
 
 
 # Animation Controls (Media) -------------------------------------------------------------------- #
 
 func swap_anim(val: int):
-	Anim.animation = "%02dA" % val
-	Anim.stop()
+	ANIM.animation = '%02dA' % val
+	ANIM.stop()
 
 func play_anim():
 	if TYPE > 0:
-		var anim = Anim.animation
-		anim[-1] = "A"
-		Anim.play(anim)
+		var anim := ANIM.animation
+		anim.replace('B', 'A')
+		ANIM.play(anim)
 
 func exit_anim():
 	if TYPE > 0:
-		var anim = Anim.animation
-		anim[-1] = "B"
-		Anim.play(anim)
+		var anim := ANIM.animation
+		anim.replace('A', 'B')
+		ANIM.play(anim)
 
 
 # Animation Controls (Direction) ---------------------------------------------------------------- #
@@ -117,32 +136,27 @@ func set_dir(val: float):
 	DIR = val
 	face_anim(val)
 
-func face_anim(val: float): Anim.global_rotation = val
+func face_anim(val: float): ANIM.global_rotation = val
 
 func spin_anim(val: float = DIR):
 
-	if abs(val - Anim.global_rotation) > PI: val += 2 * PI
+	if abs(val - ANIM.global_rotation) > PI: val += 2 * PI
 
-	var tween = Anim.create_tween()
-	tween.tween_property(Anim, "global_rotation", val, 0.25)
+	var tween = ANIM.create_tween()
+	tween.tween_property(ANIM, 'global_rotation', val, 0.25)
 
 
 # Movement Controls ----------------------------------------------------------------------------- #
 
-func move(cell: Vector2):
-
-	if Grid == null:
-		Grid = get_parent()
-		BOARD = Grid.get_parent()
+func move(pos: Vector2):
 
 	var tween = create_tween()
-	var movement = Grid.map_to_local(cell) + BOARD.tileHalf
-	tween.tween_property(self, "position", movement, 0.25)
+	tween.tween_property(self, 'position', pos, 0.25)
 
 	await tween.finished
 	self._reset()	# for Own.gd in Play mode
 
-	SIGNALS.emit_signal("done_moving")
+	SIGNALS.emit_signal('done_moving')
 
 
 # Death Animations ------------------------------------------------------------------------------ #
@@ -152,13 +166,13 @@ enum KILLS { BURST, SLICE, PIXEL }
 func die():
 
 	var anim = randi() % KILLS.size()
-	Kill.play("%02d" % anim)
+	KILL.play('%02d' % anim)
 	
 	await get_tree().create_timer(1.0).timeout
-	Glitch.hide()
-	Anim.hide()
+	FILTERS.hide()
+	ANIM.hide()
 
-	await Kill.animation_finished
+	await KILL.animation_finished
 	queue_free()
 
-	SIGNALS.emit_signal("done_killing")
+	SIGNALS.emit_signal('done_killing')
