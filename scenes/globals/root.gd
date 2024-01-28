@@ -11,9 +11,9 @@ func quit():
 
 # Grid Functions ------------------------------------------------------------- #
 
-## Creates an empty array with the given [param rows] and [param cols].[br]
+## Creates a [b]grid[\b] with the given [param rows] and [param cols].[br]
 ## Each cell will be instantiated with the supplied [param filler].
-func make_arr(rows: int, cols: int, filler = null) -> Array[Array]:
+func make_grid(rows: int, cols: int, filler = null) -> Array[Array]:
 
 	var arr: Array[Array] = []
 	for _r in range(rows):

@@ -38,10 +38,10 @@ signal menu_play(message: String)	## Transition from [Menu] to [Game].
 
 # Game Setup ----------------------------------------------------------------- #
 
-signal game_readied(val: bool)		## Verifies that [USER] if actually ready.
-signal game_setup(val: bool)		## Signals that [USER] is ready.
-signal game_reset					## Resets relevant [Game] components.
-signal game_start					## Attempts to start the [Game] proper.
+signal game_readied(ready: bool)		## Verifies that [USER] if actually ready.
+signal game_setup(id: int, val: bool)	## (Un)Readies the [class P2P.Member] with the supplied [param id].
+signal game_reset						## Resets relevant [Game] components.
+signal game_start						## Attempts to start the [Game] proper.
 
 ## Drags a [Draggable] to the given [param pos], if valid.
 ## Attemps to [method Draggable.drag] a [Unit] to a [param position].
