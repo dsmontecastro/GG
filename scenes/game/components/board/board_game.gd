@@ -1,4 +1,4 @@
-extends Board_Setup
+#extends Board_Setup
 #class_name Board_Game
 ## This section contains the game-related members and methods.
 
