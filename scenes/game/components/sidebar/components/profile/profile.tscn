@@ -43,12 +43,12 @@ custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 alignment = 1
 
-[node name="Text" type="VBoxContainer" parent="HBox/VBox/HBox"]
+[node name="Vertical" type="VBoxContainer" parent="HBox/VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Name" type="Label" parent="HBox/VBox/HBox/Text" groups=["ProfileText"]]
+[node name="Name" type="Label" parent="HBox/VBox/HBox/Vertical"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
@@ -57,41 +57,44 @@ text = "<insert_steam_name>"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Mid" type="BoxContainer" parent="HBox/VBox/HBox/Text"]
+[node name="Mid" type="BoxContainer" parent="HBox/VBox/HBox/Vertical"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 alignment = 1
 
-[node name="Buttons" type="HBoxContainer" parent="HBox/VBox/HBox/Text"]
+[node name="Buttons" type="HBoxContainer" parent="HBox/VBox/HBox/Vertical"]
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 2
 
-[node name="Forfeit" type="Button" parent="HBox/VBox/HBox/Text/Buttons" groups=["ProfileText"]]
+[node name="Forfeit" type="Button" parent="HBox/VBox/HBox/Vertical/Buttons" groups=["ProfileText"]]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 text = " FORFEIT "
 
-[node name="1" type="BoxContainer" parent="HBox/VBox/HBox/Text/Buttons"]
+[node name="1" type="BoxContainer" parent="HBox/VBox/HBox/Vertical/Buttons"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 alignment = 1
 
-[node name="Ready" type="Button" parent="HBox/VBox/HBox/Text/Buttons" groups=["ProfileText"]]
+[node name="Ready" type="Button" parent="HBox/VBox/HBox/Vertical/Buttons"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 text = " READY "
 
-[node name="2" type="BoxContainer" parent="HBox/VBox/HBox/Text/Buttons"]
+[node name="2" type="BoxContainer" parent="HBox/VBox/HBox/Vertical/Buttons"]
 custom_minimum_size = Vector2(10, 0)
 layout_mode = 2
 alignment = 1
 
-[node name="Reset" type="Button" parent="HBox/VBox/HBox/Text/Buttons" groups=["ProfileText"]]
+[node name="Reset" type="Button" parent="HBox/VBox/HBox/Vertical/Buttons" groups=["ProfileText"]]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 8
@@ -118,3 +121,7 @@ alignment = 1
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 alignment = 1
+
+[connection signal="pressed" from="HBox/VBox/HBox/Vertical/Buttons/Forfeit" to="." method="forfeit"]
+[connection signal="toggled" from="HBox/VBox/HBox/Vertical/Buttons/Ready" to="." method="ready_toggled"]
+[connection signal="pressed" from="HBox/VBox/HBox/Vertical/Buttons/Reset" to="." method="reset_board"]
