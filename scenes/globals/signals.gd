@@ -45,7 +45,7 @@ signal game_start						## Attempts to start the [Game] proper.
 
 ## Drags a [Draggable] to the given [param pos], if valid.
 ## Attemps to [method Draggable.drag] a [Unit] to a [param position].
-signal drag_to(unit: Draggable, pos: Vector2)
+signal drag_to(unit: Draggable, from: Vector2, to: Vector2)
 
 
 # Game Proper ---------------------------------------------------------------- #

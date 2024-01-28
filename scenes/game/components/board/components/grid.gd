@@ -59,7 +59,7 @@ func clear_cells():
 	for r in range(0, SPECS.x):
 		for c in range(0, SPECS.y):
 			map_cell(r, c, MODE.SET, null)
-	print_grid('CLEAR')
+	#print_grid('CLEAR')
 
 
 ## Updates all cells occupied by a [Draggable].
@@ -68,7 +68,7 @@ func update_cells():
 	for unit: Unit in get_children():
 		var cell := local_to_map(unit.position)
 		map_vector(cell, MODE.SET, unit)
-	print_grid('UPDATE')
+	#print_grid('UPDATE')
 	
 
 ## Snaps the given [param unit], if exists, to the given [param cell].[br]

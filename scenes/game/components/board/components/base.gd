@@ -4,6 +4,11 @@ class_name Base
 ## Allows the [USER] to drag-and-drop said [Units] to set-up their formation.
 
 
+# Exports
+@export var MIN := Vector2i(2, 2)
+@export var MAX := Vector2i(10, 2)
+
+
 # Core Functions ------------------------------------------------------------- #
 
 ## Initialize the [Node] and connect the necessary signals.
@@ -75,17 +80,26 @@ func show_units(val: bool):
 
 # Drag-and-Drop -------------------------------------------------------------- #
 
+##
+@onready var VALID_CELLS := get_used_cells(LAYER)
+
+
 ## Drags the child [param unit] towards the given [param pos], if possible.[br]
 ## If the drag is invalid, forces a [method Draggable.snap_back].
-func drag_unit(unit: Draggable, pos: Vector2):
+func drag_unit(unit: Draggable, origin: Vector2, mouse: Vector2):
 
 	if unit.get_parent() == self:
 
-		var to := local_to_map(pos)
-		snap_to(to, unit)
+		var to := local_to_map(mouse)
 
-		var from := local_to_map(unit.get_position())
-		var target = map_vector(to, MODE.GET)
-		snap_to(from, target)
+		if to in VALID_CELLS:
+			
+			var from := local_to_map(origin)
+			var target = map_vector(to, MODE.GET)
+
+			snap_to(from, target)
+			snap_to(to, unit)
+
+			return
 
 	unit.snap_back()

@@ -91,4 +91,4 @@ func snap_back(): set_global_position(ORIGIN)
 ## Attempts to position the [Draggable] to the current mouse position.
 func snap_to():
 	var pos := get_global_mouse_position()
-	SIGNALS.drag_to.emit(self, pos)
+	SIGNALS.drag_to.emit(self, ORIGIN, pos)
