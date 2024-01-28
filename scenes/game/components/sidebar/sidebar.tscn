@@ -8,7 +8,7 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vyicx"]
 bg_color = Color(0.176471, 0.176471, 0.176471, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1lij"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jv5kb"]
 resource_local_to_scene = true
 bg_color = Color(0.176471, 0.176471, 0.176471, 1)
 
@@ -45,7 +45,7 @@ script = ExtResource("4_3x3tn")
 [node name="Black" parent="VBox" instance=ExtResource("1_b4bew")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_m1lij")
+theme_override_styles/panel = SubResource("StyleBoxFlat_jv5kb")
 
 [node name="Team" parent="VBox/Black/HBox" index="0"]
 theme_override_styles/panel = SubResource("StyleBoxFlat_kelcm")

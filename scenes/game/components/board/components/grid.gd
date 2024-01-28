@@ -87,7 +87,7 @@ func snap_to(cell: Vector2i, unit = null):
 ## > [b]"-"[\b] : An invalid cell.[br]
 ## > [b]"0"[\b] : An empty, valid cell.[br]
 ## > [b]"%d"[\b] : The [member Unit.TYPE] of the [Draggable] occupying the cell.
-func print_grid(section: String):
+func print_grid(section: String = ''):
 
 	print('[%s] %s:' % [ name, section ])
 
