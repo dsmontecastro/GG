@@ -1,6 +1,7 @@
 extends Area2D
 class_name Unit
-##
+## Base-Class for all [Unit] subclasses.[br]
+## Contains common properties and methods that are to be inherited.[br]
 
 
 # Enumerations
@@ -28,6 +29,7 @@ const GROUPS := {
 
 # Core Functions ------------------------------------------------------------- #
 
+## 
 func _ready():
 	self.mouse_entered.connect(mouse_in)
 	self.mouse_exited.connect(mouse_out)
@@ -35,144 +37,146 @@ func _ready():
 	swap_team(TEAM)
 	set_type(TYPE)
 
+
+## 
 func _start(): pass
 
+
+## Re-sets the necessary paramters, generally after a [b]script change[\b],
 func _reset():
 	set_type(TYPE)
 	set_team(TEAM)
 	if TEAM == TEAMS.BLACK: swap_team()
-	rescale(NORMAL)
+	#rescale(NORMAL)
 
 
 # Type & Team Configuration -------------------------------------------------- #
 
-## 
-func set_type(val: int):
-	TYPE = clamp(val, 0, TYPES)
-	swap_anim(val)
-
-
-## 
-func set_team(team: TEAMS): TEAM = team
-
-
-## 
-func swap_team(team: TEAMS = TEAMS.NONE):
-
-	if TEAM != TEAMS.NONE:
-		TEAM = (TEAM * -1) as TEAMS
-		swap_color()
-		if TYPE > 1: set_dir(PI)
-
-	else:
-		TEAM = team
-		if team == TEAMS.BLACK: swap_color()
-
-
+## Copies the given [param unit]'s properties to this [Unit].
 func copy(unit: Unit):
 	set_type(unit.TYPE)
 	set_team(unit.TEAM)
 
 
-const invertModulate = Color(0.25, 0.25, 0.25)	# Matches BOARD Color
-var invertMaterial = load('res://assets/shaders/invert/invert.material')
+## Dedicated setter for [member Unit.TYPE].
+func set_type(type: int):
+	TYPE = clamp(type, 0, TYPES)
+	swap_anim(type)
 
-func swap_color():
-	ANIM.material = invertMaterial
-	ANIM.modulate = invertModulate
-	#ANIM.visible = true
+
+## Dedicated setter for [member Unit.TEAM].
+func set_team(team: TEAMS):
+	TEAM = team
+	swap_team(team)
 
 
 # Mouse Inputs --------------------------------------------------------------- #
 
+## Triggered when the [b]mouse[\b] enters the [Unit]'s [member Unit.AREA].
 func mouse_in():
-	rescale(BIGGER)
-	play_anim()
+	rescale(SCALE.BIG)
+	play()
 
+
+## Triggered when the [b]mouse[\b] leaves the [Unit]'s [member Unit.AREA].
 func mouse_out():
-	rescale(NORMAL)
-	exit_anim()
+	rescale(SCALE.DEF)
+	stop()
 
+
+## Triggers the [member Unit.AREA] functionality and interactability.
 func mouse_toggle(val: bool):
 	input_pickable = val
 	monitorable = val
 	monitoring = val
 
 
-# Scale Pop Tweening ---------------------------------------------------------------------------- #
+# ANIM Scale ----------------------------------------------------------------- #
 
-const NORMAL = Vector2(0.1, 0.1)
-const BIGGER = NORMAL * 1.1
+## Pre-set Scale Values
+const SCALE = {
+	DEF = Vector2(0.13, 0.13),
+	BIG = Vector2(0.15, 0.15),
+}
 
+
+## Changes the [b]scale[/b] of the [member Unit.ANIM] sprites.
 func rescale(val: Vector2):
 	var tween = create_tween()
 	tween.tween_property(ANIM, 'scale', val, 0.25)
 
 
-# Animation Controls (Media) -------------------------------------------------------------------- #
+# ANIM Color  ---------------------------------------------------------------- #
 
-func swap_anim(val: int):
-	ANIM.animation = '%02dA' % val
+## Material containing a [i]shader[/i] used to [b]invert[/b] colors beneath it.
+@onready var INVERTER := load('res://assets/shaders/invert/invert.material')
+
+
+## Toggles the [b]color[/b] of the [member Unit.ANIM] sprites.
+func swap_color(team: TEAMS = TEAM):
+
+	if team == TEAMS.BLACK:
+		ANIM.set_material(INVERTER)
+		set_orientation(PI)
+
+	else:
+		ANIM.set_material(null)
+		set_orientation(0)
+
+
+## Toggles the [b]team[/b] of the [member Unit.ANIM] sprites.
+func swap_team(team: TEAMS = TEAMS.NONE):
+
+	if team == TEAMS.NONE:
+		team = (TEAM * -1) as TEAMS
+
+	if TEAM != team: swap_color(team)
+
+
+# ANIM Animation ------------------------------------------------------------- #
+
+## Swaps to the matching animation given the provided [param index].
+func swap_anim(index: int):
+	ANIM.animation = '%02dA' % index
 	ANIM.stop()
 
-func play_anim():
+
+## Plays the current animation assigned to [member Unit.ANIM].
+func play():
 	if TYPE > 0:
-		var anim := ANIM.animation
-		anim.replace('B', 'A')
-		ANIM.play(anim)
+		ANIM.frame = 0
+		ANIM.play()
 
-func exit_anim():
+
+## Stops the current animation [member Unit.ANIM], and restarts from frame 0.
+func stop():
 	if TYPE > 0:
-		var anim := ANIM.animation
-		anim.replace('A', 'B')
-		ANIM.play(anim)
+		ANIM.stop()
+		ANIM.frame = 0
 
 
-# Animation Controls (Direction) ---------------------------------------------------------------- #
+# ANIM Orientation ----------------------------------------------------------- #
 
-var DIR = 0
+## Tracker for the current orientation of [member Unit.ANIM].
+var ORIENTATION := 0.0
 
-func set_dir(val: float):
-	DIR = val
-	face_anim(val)
 
-func face_anim(val: float): ANIM.global_rotation = val
+## Dedicated setter for [member Unit.TEAM].
+func set_orientation(orientation: float):
+	ORIENTATION = orientation
+	orient_to(orientation)
 
-func spin_anim(val: float = DIR):
 
-	if abs(val - ANIM.global_rotation) > PI: val += 2 * PI
+## Instantly orients the [member Unit.ANIM] to the given [param orientation].
+func orient_to(orientation: float):
+	ANIM.global_rotation = orientation
+
+
+## Spins the [member Unit.ANIM] to the given [param orientation].
+func spin_to(orientation: float = ORIENTATION):
+
+	if abs(orientation - ANIM.global_rotation) > PI:
+		orientation += 2 * PI
 
 	var tween = ANIM.create_tween()
-	tween.tween_property(ANIM, 'global_rotation', val, 0.25)
-
-
-# Movement Controls ----------------------------------------------------------------------------- #
-
-func move(pos: Vector2):
-
-	var tween = create_tween()
-	tween.tween_property(self, 'position', pos, 0.25)
-
-	await tween.finished
-	self._reset()	# for Own.gd in Play mode
-
-	SIGNALS.emit_signal('done_moving')
-
-
-# Death Animations ------------------------------------------------------------------------------ #
-
-enum KILLS { BURST, SLICE, PIXEL }
-
-func die():
-
-	var anim = randi() % KILLS.size()
-	KILL.play('%02d' % anim)
-	
-	await get_tree().create_timer(1.0).timeout
-	FILTERS.hide()
-	ANIM.hide()
-
-	await KILL.animation_finished
-	queue_free()
-
-	SIGNALS.emit_signal('done_killing')
+	tween.tween_property(ANIM, 'global_rotation', orientation, 0.25)

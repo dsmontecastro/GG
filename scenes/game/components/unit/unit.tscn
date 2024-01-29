@@ -3,7 +3,7 @@
 [ext_resource type="SpriteFrames" uid="uid://dtmri6amur2ld" path="res://assets/sprites/game/units/anims.tres" id="1"]
 [ext_resource type="TileSet" uid="uid://ngqcdccxfaip" path="res://assets/sprites/game/units/moves.tres" id="2_jxv8t"]
 [ext_resource type="Material" uid="uid://dk0jwqgpcnqgi" path="res://assets/shaders/glitch/glitch.material" id="3"]
-[ext_resource type="SpriteFrames" path="res://assets/sprites/game/units/deaths.tres" id="4"]
+[ext_resource type="SpriteFrames" uid="uid://jere1p2sewb0" path="res://assets/sprites/game/units/deaths.tres" id="4"]
 [ext_resource type="Material" uid="uid://dew8jxktdvh8f" path="res://assets/shaders/brighten/brighten.material" id="5"]
 
 [sub_resource type="RectangleShape2D" id="1"]
@@ -24,17 +24,15 @@ layer_0/tile_data = PackedInt32Array(65536, 65537, 0, 131071, 65537, 0, 65535, 6
 [node name="Area" type="CollisionShape2D" parent="."]
 scale = Vector2(0.999999, 0.999999)
 shape = SubResource("1")
-debug_color = Color(0.721569, 0, 0.329412, 0.419608)
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="Anim" type="AnimatedSprite2D" parent="."]
 z_as_relative = false
-position = Vector2(1.90735e-06, -2.38419e-06)
-scale = Vector2(0.18, 0.18)
+position = Vector2(-9.53674e-07, -4.76837e-07)
+scale = Vector2(0.13, 0.13)
 sprite_frames = ExtResource("1")
-speed_scale = 1.5
 
 [node name="Filters" type="Node2D" parent="."]
-position = Vector2(-25, -25)
 
 [node name="Glitch" type="ColorRect" parent="Filters"]
 visible = false
@@ -45,5 +43,7 @@ mouse_filter = 2
 
 [node name="Kill" type="AnimatedSprite2D" parent="."]
 z_index = 2
-scale = Vector2(0.1, 0.1)
+position = Vector2(4.17233e-07, 4.76837e-07)
+scale = Vector2(0.15, 0.15)
 sprite_frames = ExtResource("4")
+animation = &"00"

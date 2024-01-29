@@ -1,7 +1,7 @@
 extends Unit
 class_name Draggable
-## Allows drag-and-drop functionality for the [Unit] class.[br]
-## This [Draggable] can only be placed within its respective [Base].
+## Allows drag-and-drop functionality, split from [Moveable] class.[br]
+## This [Draggable] can only be placed within its respective parent [Base].
 
 
 # Constants
