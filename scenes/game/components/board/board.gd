@@ -21,7 +21,7 @@ func _ready():
 	SIGNALS.game_readied.connect(_readied)
 	SIGNALS.game_setup.connect(_setup)
 	SIGNALS.game_start.connect(_start)
-	FOE.toggle_color()
+	_reset()
 
 
 ## On [signal SIGNALS.game_start], hides the [Base]s
@@ -30,15 +30,16 @@ func _start():
 	SIGNALS.game_readied.disconnect(_readied)
 	SIGNALS.game_setup.disconnect(_setup)
 	SIGNALS.game_start.disconnect(_start)
-	OWN.hide()
-	FOE.hide()
+	OWN._start()
+	FOE._start()
 
 
 ## [TODO] Decide whether to controls signals from here,
 ## or directly connect them to the components.
 func _reset():
 	OWN._reset()
-	if USER.IN_GAME: FOE._reset()
+	if USER.IN_GAME:
+		FOE._reset()
 
 
 ## Copies the [Unit]s in [member Board.OWN] to [member Board.FIELD].[br]

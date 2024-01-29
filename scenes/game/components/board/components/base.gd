@@ -24,6 +24,7 @@ func _start():
 	SIGNALS.game_start.disconnect(_start)
 	SIGNALS.game_reset.disconnect(_reset)
 	SIGNALS.drag_to.disconnect(drag_unit)
+	reset_color()
 	hide()
 
 
@@ -32,6 +33,7 @@ func _reset():
 	for child: Draggable in get_children():
 		child._reset()
 	update_cells()
+	toggle_color()
 	show()
 
 

@@ -9,6 +9,9 @@ const SIZE = 128
 const FORMAT = Image.FORMAT_RGBA8
 const INTERPOLATION = Image.INTERPOLATE_LANCZOS
 
+# Enumerations
+enum MODE { GAME, SETUP, ENEMY }
+
 # Member Scenes
 @onready var NAME: Label = $%Name
 @onready var TEAM: Panel = $%Team
@@ -17,38 +20,37 @@ const INTERPOLATION = Image.INTERPOLATE_LANCZOS
 @onready var BUTTONS: HBoxContainer = $%Buttons
 @onready var VERTICAL: VBoxContainer = $%Vertical
 
-# Tracker(s)
-var COLOR := Color.WHITE
-
 
 # Core Functions ------------------------------------------------------------- #
 
 ## Initializes the [Object] and connects the relevant [signal]s.
-func _ready():
-	SIGNALS.game_reset.connect(_reset)
-	SIGNALS.game_start.connect(_start)
-	_reset()
+func _ready(): pass
 
 
-## Toggles the buttons' disabled states to [b]true[\b],
-## where only [member Profile.Forfeit] is [b]active[\b].
-func _start(): disable(true)
+## [TODO] Unsure.
+func _start(): pass
 
 
-## Toggles the buttons' disabled states to [b]false[\b],
-## where only [member Profile.Forfeit] is [b]inactive[\b].
-func _reset(): disable(false)
+## [TODO] Unsure.
+func _reset(): pass
 
 
 # Setup Functions ------------------------------------------------------------ #
 
-## Toggles the [b]disabled[/b] state of all buttons in [member Profile.BUTTONS].
-func disable(val: bool = false):
+## Toggles the [b]disabled[/b] state of all [member Profile.BUTTONS].[br]
+## The behavior changes depending on the supplied [enum Profile.MODE]:[br]
+## > GAME: [member Profile.FORFEIT] enabled; rest are disabled.[br]
+## > SETUP: [member Profile.FORFEIT] disabled; rest are enabled.[br]
+## > ENEMY: all buttons are disabled.[br]
+func toggle_buttons(mode: MODE):
+
+	var value := (mode != MODE.SETUP)
+
 	for button in BUTTONS.get_children():
 		if button is Button:
-			if button == FORFEIT:
-				button.disabled = !val
-			else: button.disabled = val
+			button.disabled = value
+
+	FORFEIT.disabled = (mode != MODE.GAME)
 
 
 ## Swaps the order of elements in [member Profile.VERTICAL].

@@ -8,8 +8,8 @@ class_name Sidebar
 @onready var CHAT: Chat = $%Chat
 @onready var BLACK: Profile = $%Black
 @onready var WHITE: Profile = $%White
-@onready var FOE := BLACK if USER.HOSTING else WHITE	## Foe's [Base]
-@onready var OWN := WHITE if USER.HOSTING else BLACK	## User's [Base]
+@onready var FOE := BLACK if USER.HOSTING else WHITE	## Foe's [Profile]
+@onready var OWN := WHITE if USER.HOSTING else BLACK	## User's [Profile]
 
 
 # Core Functions ------------------------------------------------------------- #
@@ -18,17 +18,19 @@ class_name Sidebar
 ## relevant [signal]s.
 func _ready():
 	Steam.avatar_loaded.connect(profile_updated)
+	FOE.toggle_buttons(Profile.MODE.ENEMY)
 	BLACK.reverse()
 	_reset()
-	_start()
 
 
 ## Disables the [member P2P.ENEMY] [Profile]'s buttons for the [USER].
-func _start(): FOE.disable(true)
+func _start():
+	OWN.toggle_buttons(Profile.MODE.GAME)
 
 
 ## Resets the [Chat] and [Profile] components.
 func _reset():
+	OWN.toggle_buttons(Profile.MODE.SETUP)
 	update_profiles()
 	CHAT._reset()
 
