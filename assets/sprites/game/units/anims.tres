@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=498 format=3 uid="uid://dtmri6amur2ld"]
+[gd_resource type="SpriteFrames" load_steps=497 format=3 uid="uid://dtmri6amur2ld"]
 
 [ext_resource type="Texture2D" uid="uid://dgcuj8ap0trxy" path="res://assets/sprites/game/units/frames/00.png" id="1_ovuun"]
 [ext_resource type="Texture2D" uid="uid://0klurf7pl50n" path="res://assets/sprites/game/units/frames/01.png" id="2_xfjyi"]
@@ -16,7 +16,6 @@
 [ext_resource type="Texture2D" uid="uid://bbuofit0o1n7k" path="res://assets/sprites/game/units/frames/13.png" id="14_ni386"]
 [ext_resource type="Texture2D" uid="uid://cofxjmsj7131o" path="res://assets/sprites/game/units/frames/14.png" id="15_hoeb1"]
 [ext_resource type="Texture2D" uid="uid://csq715o6di8qf" path="res://assets/sprites/game/units/frames/15.png" id="16_sd5bm"]
-[ext_resource type="Texture2D" uid="uid://vsm3ef8twsdu" path="res://assets/sprites/game/units/death/00/01.png" id="481_negl3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ru07n"]
 atlas = ExtResource("1_ovuun")
@@ -3462,7 +3461,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("481_negl3")
+"texture": null
 }],
 "loop": false,
 "name": &"default",

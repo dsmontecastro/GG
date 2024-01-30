@@ -9,8 +9,10 @@ enum TEAMS { BLACK = -1, NONE = 0, WHITE = 1 }
 
 # Constants
 const TYPES = 16
+const CLICK = 'Click'
 const GROUPS := {
 	UNIT = 'Unit',
+	DRAG = 'Drag',
 	ALLY = 'Ally',
 	ENEMY = 'Enemy',
 }
@@ -51,12 +53,6 @@ func _reset():
 
 
 # Type & Team Configuration -------------------------------------------------- #
-
-## Copies the given [param unit]'s properties to this [Unit].
-func copy(unit: Unit):
-	set_type(unit.TYPE)
-	set_team(unit.TEAM)
-
 
 ## Dedicated setter for [member Unit.TYPE].
 func set_type(type: int):
@@ -137,7 +133,7 @@ func swap_team(team: TEAMS = TEAMS.NONE):
 
 ## Swaps to the matching animation given the provided [param index].
 func swap_anim(index: int):
-	ANIM.animation = '%02dA' % index
+	ANIM.animation = '%02d' % index
 	ANIM.stop()
 
 

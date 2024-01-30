@@ -4,9 +4,6 @@ class_name Draggable
 ## This [Draggable] can only be placed within its respective parent [Base].
 
 
-# Constants
-const INPUT = 'Click'
-
 # Trackers
 @onready var BASE: TileMap = get_parent()	## Parent [TileMap]
 @onready var START := global_position		## Initial global position where the [Unit] is spawned from.
@@ -17,8 +14,7 @@ const INPUT = 'Click'
 
 func _ready():
 	self.input_event.connect(drag)
-	add_to_group(GROUPS.UNIT, true)
-	add_to_group(GROUPS.ALLY, true)
+	add_to_group(GROUPS.DRAG, true)
 	set_process(false)
 
 
@@ -53,13 +49,13 @@ func shadow(val: bool):
 
 	if val:
 		ANIM.z_index = 15
-		if GROUPS.UNIT in get_groups():
-			remove_from_group(GROUPS.UNIT)
+		if GROUPS.DRAG in get_groups():
+			remove_from_group(GROUPS.DRAG)
 	else:
 		ANIM.z_index = 0
-		add_to_group(GROUPS.UNIT)
+		add_to_group(GROUPS.DRAG)
 
-	get_tree().call_group(GROUPS.UNIT, 'mouse_toggle', !val)
+	get_tree().call_group(GROUPS.DRAG, 'mouse_toggle', !val)
 	set_process(val)
 
 
@@ -71,11 +67,11 @@ func drag(_vp, _event, _idx):
 		var locked := is_processing()
 
 		## Enable [method Draggable.shadow]
-		if not locked and Input.is_action_just_pressed(INPUT):
+		if not locked and Input.is_action_just_pressed(CLICK):
 			shadow(true)
 
 		## Disable [method Draggable.shadow] and "drop" [Unit].
-		elif locked and Input.is_action_just_released(INPUT):
+		elif locked and Input.is_action_just_released(CLICK):
 			shadow(false)
 
 			if overlaps_body(BASE): snap_to()

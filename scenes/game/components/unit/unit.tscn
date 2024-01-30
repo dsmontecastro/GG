@@ -22,15 +22,16 @@ layer_0/name = "Moves"
 layer_0/tile_data = PackedInt32Array(65536, 65537, 0, 131071, 65537, 0, 65535, 65537, 0, -1, 65537, 0, -65536, 65537, 0, -65535, 65537, 0, 1, 65537, 0, 65537, 65537, 0)
 
 [node name="Area" type="CollisionShape2D" parent="."]
+visible = false
 scale = Vector2(0.999999, 0.999999)
 shape = SubResource("1")
-debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="Anim" type="AnimatedSprite2D" parent="."]
 z_as_relative = false
 position = Vector2(-9.53674e-07, -4.76837e-07)
 scale = Vector2(0.13, 0.13)
 sprite_frames = ExtResource("1")
+animation = &"00"
 
 [node name="Filters" type="Node2D" parent="."]
 
@@ -46,4 +47,4 @@ z_index = 2
 position = Vector2(4.17233e-07, 4.76837e-07)
 scale = Vector2(0.15, 0.15)
 sprite_frames = ExtResource("4")
-animation = &"00"
+animation = &"2"

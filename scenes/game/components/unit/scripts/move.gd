@@ -11,9 +11,6 @@ enum STATES { NONE, MOVING, DYING }		## Enums for [member Moveable.STATE].
 @onready var CELL := Vector2i.ZERO		## 
 @onready var STATE := STATES.NONE		## Tracker for animation state.
 
-# Tween
-@onready var TWEEN := create_tween()	## Handler for [method Moveable.move]
-
 
 # Core Functions ------------------------------------------------------------- #
 
@@ -21,7 +18,6 @@ enum STATES { NONE, MOVING, DYING }		## Enums for [member Moveable.STATE].
 func _ready():
 	super._ready()
 	ANIM.animation_finished.connect(end_death)
-	TWEEN.finished.connect(end_move)
 
 
 # Movement Tween ------------------------------------------------------------- #
@@ -32,27 +28,29 @@ func set_cell(cell: Vector2i): CELL = cell
 
 ## 
 func move(pos: Vector2):
-	TWEEN.tween_property(self, 'position', pos, 0.25)
 
+	var tween := create_tween()
+	tween.tween_property(self, 'position', pos, 0.25)
 
-## 
-func end_move(): SIGNALS.has_move.emit()
+	await tween.finished
+	SIGNALS.has_move.emit()
 
 
 # Death Animation ------------------------------------------------------------------------------ #
 
 ## 
-@onready var KILLS = KILL.sprite_frames.animations
+@onready var KILLS: Array = $Kill.sprite_frames.animations
 
 
 ## 
 func die():
 	randomize()
-	var index := randi() % KILLs.size()
-	var anim := KILLS[index]
+	var index := randi() % KILLS.size()
+	var anim: String = KILLS[index]
 	KILL.play(anim)
 
-	while ANIM.frame <= 30: pass
+	## Wait for [member Unit.KILL] animation to reach 1 second.
+	await get_tree().create_timer(1.0).timeout
 
 	FILTERS.hide()
 	ANIM.hide()

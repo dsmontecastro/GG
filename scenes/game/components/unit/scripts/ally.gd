@@ -1,10 +1,7 @@
-extends Unit
+extends Moveable
 class_name Ally
+## 
 
-
-# Constants
-const UNITS = 'Units'
-const ALLIES = 'Allies'
 
 # Member Scenes
 @onready var Moves = $Moves
@@ -13,30 +10,35 @@ const ALLIES = 'Allies'
 # Core Functions ------------------------------------------------------------- #
 
 func _ready():
-	add_to_group(ALLIES, true)
-	add_to_group(UNITS, true)
-	disconnect("mouse_exited", Callable(self, "mouse_out"))
-	connect("input_event", Callable(self, "move_unit"))
-	connect("mouse_exited", Callable(self, "unfocus"))
-	set_dir(ANIM.global_rotation)
+	add_to_group(GROUPS.ALLY, true)
+	self.input_event.connect(move_unit)
+	set_orientation(ANIM.global_rotation)
 	set_process(false)
 
 func _reset():
-	connect("input_event", Callable(self, "move_unit"))
-	connect("mouse_exited", Callable(self, "unfocus"))
 	toggle_foes(true)
-	spin_anim(DIR)
+	spin_to()
 	ANIM.stop()
+
+
+# Initialization ------------------------------------------------------------- #
+
+## Copies the given [param unit]'s properties to this [Unit].
+func copy(unit: Unit):
+	name = unit.name
+	set_type(unit.TYPE)
+	set_team(unit.TEAM)
 
 
 # Basic Functions ------------------------------------------------------------------------------- #
 
-func unfocus():
+func mouse_out():
+	super.mouse_out()
 	toggle_moves(false)
-	spin_anim(DIR)
+	spin_to()
 
 func toggle_foes(val: bool):
-	get_tree().call_group("Enemies", "toggle", val)
+	get_tree().call_group(GROUPS.ENEMY, 'toggle', val)
 
 func toggle_moves(val: bool):
 
@@ -52,7 +54,7 @@ func toggle_moves(val: bool):
 # Movement Functions --------------------------------------------------------------------------- #
 
 func move_unit(_v, _e, _i):
-	if USER.IS_TURN and Input.is_action_just_pressed("Click"):
+	if USER.IS_TURN and Input.is_action_just_pressed(CLICK):
 		if is_processing():
 			send_move(get_global_mouse_position())
 		else: toggle_moves(true)
@@ -67,9 +69,9 @@ func send_move(_to: Vector2): pass
 #
 	#if to != Vector2.ZERO:
 		#if Board.is_valid_to(from + to):
-			#disconnect("input_event", Callable(self, "to_unit"))
-			#disconnect("mouse_exited", Callable(self, "unfocus"))
-			#SIGNALS.emit_signal("move", from, to)
+			#disconnect('input_event', Callable(self, 'to_unit'))
+			#disconnect('mouse_exited', Callable(self, 'unfocus'))
+			#SIGNALS.emit_signal('move', from, to)
 			#toggle_moves(false)
 
 

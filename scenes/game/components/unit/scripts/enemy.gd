@@ -1,4 +1,4 @@
-extends Unit
+extends Moveable
 class_name Enemy
 
 
@@ -46,6 +46,7 @@ func cycle(val: int):
 	redirect(ICON)
 
 func redirect(val: int):
-	if TEAM == -1:
-		if val > 1: face_anim(DIR + PI)
-		else: face_anim(0)
+	if TEAM == TEAMS.BLACK:
+		if val > 1:
+			orient_to(ORIENTATION + PI)
+		else: orient_to(0)
