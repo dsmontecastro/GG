@@ -4,68 +4,42 @@ class_name Base
 ## Allows the [USER] to drag-and-drop said [Units] to set-up their formation.
 
 
-# Exports
-@export var MIN := Vector2i(2, 2)
-@export var MAX := Vector2i(10, 2)
+# Constants
+var DRAG_TO := SIGNALS.drag_to.get_name()
 
 
 # Core Functions ------------------------------------------------------------- #
 
-## Initialize the [Node] and connect the necessary signals.
+## Initializes the [Node] and connect the necessary [SIGNALS].
 func _ready():
 	SIGNALS.game_start.connect(_start)
 	SIGNALS.game_reset.connect(_reset)
-	SIGNALS.drag_to.connect(drag_unit)
 	_reset()
 
 
-## Disconnect the relevant signals on [signal SIGNALS.game_start].
+## Resets the modulation and hides the [TileMap].
 func _start():
-	SIGNALS.game_start.disconnect(_start)
-	SIGNALS.game_reset.disconnect(_reset)
-	SIGNALS.drag_to.disconnect(drag_unit)
-	reset_color()
+	_setup(true)
+	lighten()
 	hide()
 
 
-## Resets all [Draggables] and subsequently [method update_cells].
+## Resets all [Draggables] and subsequently [method update_cells].[br]
+## This also enables the [b]drag-and-drop[/b] functionality, if disabled.
 func _reset():
+
 	for child: Draggable in get_children():
 		child._reset()
 	update_cells()
-	toggle_color()
 	show()
 
-
-## [TODO] Unsure
-func _setup(val: bool): pass
-
-
-# Color Handling ------------------------------------------------------------- #
-
-## References for the [Color]s used in modulation.
-const COLORS = {
-	DEF = Color(0,0,0,0),
-	DARK = Color(0,0,0,0.5),
-	LITE = Color(1,1,1,0.5)
-}
+	if not SIGNALS.is_connected(DRAG_TO, drag_unit):
+		SIGNALS.drag_to.connect(drag_unit)
 
 
-## Resets the modulation for the [TileMap].
-func reset_color(): set_layer_modulate(LAYER, COLORS.DEF)
-
-
-## Brightens or darkens the [TileMap] based on the current modulation.
-func toggle_color():
-
-	var color = COLORS.DEF
-	var curr = get_layer_modulate(LAYER)
-
-	if curr == COLORS.DARK: color = COLORS.LITE
-	elif curr == COLORS.LITE: color = COLORS.DARK
-	
-	set_layer_modulate(LAYER, color)
-	print("%s: %s" % [self.name, self.modulate])
+## Disables [b]drag-and-drop[/b] functionality, if [param val] is [b]true[/b].
+func _setup(val: bool):
+	if val: SIGNALS.drag_to.disconnect(drag_unit)
 
 
 # Base and Unit Visibility --------------------------------------------------- #
@@ -82,7 +56,7 @@ func show_units(val: bool):
 
 # Drag-and-Drop -------------------------------------------------------------- #
 
-##
+## Retrieves and records the valid cells used in the [TileMap].
 @onready var VALID_CELLS := get_used_cells(LAYER)
 
 

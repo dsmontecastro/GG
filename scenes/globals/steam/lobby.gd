@@ -240,11 +240,12 @@ func join_status(id: int, _permissions: int, _locked: bool, response: int):
 	if not host: SIGNALS.join_response.emit(success, message)
 
 
-# Gameplay Functions --------------------------------------------------------- #
+# Setup Functions ------------------------------------------------------------ #
 
-## 
-func setup(form: String):
-	Steam.setLobbyData(ROOM.ID, str(META.FORM), form)
+## Updates the [USER]'s [param form] on the [LOBBY] [class P2P.Member] data.
+func setup(formation: Array[Array]):
+	var form := str(formation)
+	Steam.setLobbyMemberData(ROOM.ID, str(META.FORM), form)
 
 
 ## Checks to see if all members are 'ready' to start the [Game].
@@ -259,3 +260,6 @@ func all_ready() -> bool:
 		if not form: return false
 
 	return true
+
+
+# Gameplay Functions --------------------------------------------------------- #

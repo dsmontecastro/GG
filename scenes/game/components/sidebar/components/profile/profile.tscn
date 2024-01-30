@@ -86,6 +86,7 @@ custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
+toggle_mode = true
 text = " READY "
 
 [node name="2" type="BoxContainer" parent="HBox/VBox/HBox/Vertical/Buttons"]

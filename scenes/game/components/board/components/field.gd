@@ -18,18 +18,16 @@ var ENEMY := preload('res://scenes/game/components/unit/scripts/enemy.gd')
 
 # Core Functions ------------------------------------------------------------- #
 
-## Initializes the [Object] and connects the relevant [signal]s.
+## Connects relevant [SIGNALS].
 func _ready():
-	SIGNALS.game_reset.connect(_reset)
 	SIGNALS.game_start.connect(_start)
-	_reset()
+	SIGNALS.game_reset.connect(_reset)
 
 
-## Places the [Enemy] [Unit]s onto the board.
+## Places the [Enemy] [Unit]s and [method Field.lighten]s the layer modulation.
 func _start():
-	SIGNALS.game_reset.connect(_reset)
-	SIGNALS.game_start.connect(_start)
 	form_enemies()
+	lighten()
 
 
 ## Clears the [member Grid.GRID] and children of the [TileMap].
@@ -66,12 +64,13 @@ func make_ally(unit: Unit):
 
 	var ally := UNIT.instantiate()
 	ally.set_script(ALLY)
-	ally.copy(unit)
-
 	add_child(ally)
+
+	#ally.copy(unit)
 
 	var cell := local_to_map(unit.position)
 	snap_to(cell, ally)
+	ally.copy(unit)
 
 
 ## Creates and places [Enemy] [Unit]s given the supplied parameters.
@@ -87,10 +86,6 @@ func make_enemy(cell: Vector2i, type: int, team: Unit.TEAMS):
 
 
 # Formation ------------------------------------------------------------------ #
-
-## Converts the current [member Grid.GRID] into a line of [String].
-func get_form() -> String: return str(GRID)
-
 
 ## [TODO] Converts the [member P2P.ENEMY]'s [member ROOM.Member.form]
 ## into a [member Grid.GRID] composed of [Enemy] [Unit]s.

@@ -16,15 +16,28 @@ var READY := false
 
 func _ready():
 	SIGNALS.users_update.connect(lobby_change)
+	SIGNALS.game_setup.connect(_setup)
 	SIGNALS.game_start.connect(_start)
 	SIGNALS.game_reset.connect(_reset)
-	SIGNALS.game_setup.connect(_setup)
+	SIGNALS.game_reset.emit()
 	P2P._start()
 
 
-func _start(): pass
-func _reset(): pass
+func _start():
+	print('SIGNAL EMITTED: GAME_START')
 
+
+func _reset():
+	print('SIGNAL EMITTED: GAME_RESET')
+
+
+## Sets the [member Game.READY] state.
+func _setup(val: bool):
+	print('SIGNAL EMITTED: SETUP(%s)' % val)
+	print('ACTUAL READY STATE: %s' % USER.READIED)
+
+
+# Real-time Processing ------------------------------------------------------- #
 
 ## 
 func _process(_d):
@@ -45,13 +58,6 @@ func _parse(data: P2P.Message):
 
 
 # Setup Functions ------------------------------------------------------------ #
-
-## Sets the [member Game.READY] state.
-func _setup(_val: bool):
-	if BOARD.setup():
-		var form_meta: String = LOBBY.META.keys()[LOBBY.META.FORM]
-		Steam.setLobbyMemberData(ROOM.ID, form_meta, '')
-
 
 ## 
 func lobby_change(state: int, _msg: String):

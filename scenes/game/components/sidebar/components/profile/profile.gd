@@ -16,6 +16,7 @@ enum MODE { GAME, SETUP, ENEMY }
 @onready var NAME: Label = $%Name
 @onready var TEAM: Panel = $%Team
 @onready var ICON: TextureRect = $%Icon
+@onready var READY: Button = $%Ready
 @onready var FORFEIT: Button = $%Forfeit
 @onready var BUTTONS: HBoxContainer = $%Buttons
 @onready var VERTICAL: VBoxContainer = $%Vertical
@@ -24,7 +25,8 @@ enum MODE { GAME, SETUP, ENEMY }
 # Core Functions ------------------------------------------------------------- #
 
 ## Initializes the [Object] and connects the relevant [signal]s.
-func _ready(): pass
+func _ready():
+	SIGNALS.game_readied.connect(set_ready)
 
 
 ## [TODO] Unsure.
@@ -59,7 +61,7 @@ func reverse():
 	VERTICAL.move_child(child, -1)
 
 
-# Profile Functions ---------------------------------------------------------- #
+# Button Signals ------------------------------------------------------------- #
 
 ## Immediately surrenders the [Game], if exists.
 func forfeit():
@@ -74,6 +76,14 @@ func ready_toggled(val: bool):
 ## Signals to reset the [USER]'s [Base] during setup.
 func reset_board():
 	if not USER.IN_GAME: SIGNALS.game_reset.emit()
+
+
+# Profile-specific Functions ------------------------------------------------- #
+
+## Dedicated setter for [member Profile.READY]; does not emit a signal.
+func set_ready(val: bool):
+	if not READY.disabled:
+		READY.set_pressed_no_signal(val)
 
 
 ## Updates the [member Profile.NAME] and [member Profile.ICON] elements using
