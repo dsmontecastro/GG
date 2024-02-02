@@ -55,25 +55,6 @@ func _leave():
 	_reset()
 
 
-## [TEST] Prints out the current lobby information, if exists.
-func _debug():
-
-	var id := ROOM.ID
-
-	if id <= 0: return 'Error: Invalid lobby.'
-
-	else:
-
-		var info = [id]
-		info.append(Steam.getNumLobbyMembers(id))
-		info.append(Steam.getLobbyMemberLimit(id))
-		info.append(Steam.getLobbyData(id, str(META.NAME)))
-		info.append(Steam.getLobbyData(id, str(META.HOST)))
-		info.append(Steam.getLobbyData(id, str(META.MODE)))
-
-		return '%d (%d/%d) [%s]: \'%s\' by %s' % info
-
-
 # Lobby Updates -------------------------------------------------------------- #
 
 ## Enacted on [signal Steam.persona_state_change].[br]

@@ -33,6 +33,23 @@ func _leave():
 	else: print('User was not in a lobby...')
 
 
+## [TEST] Prints out the current lobby information, if exists.
+func _debug():
+
+	if ID <= 0: return 'Error: Invalid lobby.'
+
+	else:
+
+		var info = [ID]
+		info.append(Steam.getNumLobbyMembers(ID))
+		info.append(Steam.getLobbyMemberLimit(ID))
+		info.append(Steam.getLobbyData(ID, str(LOBBY.META.NAME)))
+		info.append(Steam.getLobbyData(ID, str(LOBBY.META.HOST)))
+		info.append(Steam.getLobbyData(ID, str(LOBBY.META.MODE)))
+
+		return '%d (%d/%d) [%s]: \'%s\' by %s' % info
+
+
 # Members Handling ----------------------------------------------------------- #
 
 ## Adds [class ROOM.Memeber] with the given parameters.
