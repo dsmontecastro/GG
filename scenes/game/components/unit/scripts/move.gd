@@ -14,19 +14,19 @@ enum STATES { NONE, MOVING, DYING }		## Enums for [member Moveable.STATE].
 
 # Core Functions ------------------------------------------------------------- #
 
-## 
+## Calls the parent [method Unit._ready] and connects new [signal]s.
 func _ready():
 	super._ready()
 	ANIM.animation_finished.connect(end_death)
 
 
-# Movement Tween ------------------------------------------------------------- #
+# Movement Tweening ---------------------------------------------------------- #
 
 ## Dedicated setter for [member Moveable.CELL].
 func set_cell(cell: Vector2i): CELL = cell
 
 
-## 
+## Slides towards the give [param pos].
 func move(pos: Vector2):
 
 	var tween := create_tween()
@@ -39,23 +39,22 @@ func move(pos: Vector2):
 # Death Animation ------------------------------------------------------------------------------ #
 
 ## 
-@onready var KILLS: Array = $Kill.sprite_frames.animations
+@onready var KILLS: Array = $Death.sprite_frames.animations
 
 
-## 
+## Plays a random [member Unit.DEATH] animation, and hides it from view.
 func die():
 	randomize()
 	var index := randi() % KILLS.size()
 	var anim: String = KILLS[index]
-	KILL.play(anim)
+	DEATH.play(anim)
 
 	## Wait for [member Unit.KILL] animation to reach 1 second.
 	await get_tree().create_timer(1.0).timeout
 
-	FILTERS.hide()
+	FILTER.hide()
 	ANIM.hide()
 
-## 
-func end_death():
-	queue_free()
-	SIGNALS.has_died.emit()
+
+## After [method Moveable.die] is finished, emits a [signal] upwards.
+func end_death(): SIGNALS.has_died.emit(self)

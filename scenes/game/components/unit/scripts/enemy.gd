@@ -5,10 +5,15 @@ class_name Enemy
 # Basic Functions ------------------------------------------------------------------------------- #
 
 func _ready():
-	add_to_group("Units", true)
-	add_to_group("Enemies", true)
-	connect("input_event", Callable(self, "cycle_unit"))
-	FILTERS.show()
+	FILTER.show()
+	add_to_group(GROUPS.ENEMY)
+	self.input_event.connect(cycle_unit)
+
+
+func init(type: int, team: TEAMS):
+	set_team(team)
+	set_type(type)
+	cycle(0)
 
 
 # Cycling Toggle -------------------------------------------------------------------------------- #
@@ -19,34 +24,41 @@ func toggle(val: bool): ACTIVE = val
 
 # Icon Cycling ---------------------------------------------------------------------------------- #
 
-var ICON = 16
+var ICON = 0
+
+const INPUTS = {
+	L_CLICK = CLICK,
+	R_CLICK = 'R-Click',
+	SWAP_PREV = 'Swap-Prev',
+	SWAP_NEXT = 'Swap-Next',
+}
 
 func cycle_unit(_v, _e, _i):
 
-	if not ACTIVE: return
+	if ACTIVE:
 
-	var click = Input.is_action_just_pressed("Click")
-	var rClick = Input.is_action_just_pressed("RClick")
-	var swapUp = Input.is_action_just_released("SwapUp")
-	var swapDown = Input.is_action_just_released("SwapDown")
+		var l_click = Input.is_action_just_pressed(INPUTS.L_CLICK)
+		var r_click = Input.is_action_just_pressed(INPUTS.R_CLICK)
+		var swap_prev = Input.is_action_just_released(INPUTS.SWAP_PREV)
+		var swap_next = Input.is_action_just_released(INPUTS.SWAP_NEXT)
 
-	var newIcon = ICON
-	if click or swapUp: newIcon += 1
-	elif rClick or swapDown: newIcon -= 1
-	
-	if newIcon != ICON: cycle(newIcon)
+		var icon = ICON
+		if l_click or swap_next: icon += 1
+		elif r_click or swap_prev: icon -= 1
+		
+		if icon != ICON: cycle(icon)
 
 
 # Helper Functions ------------------------------------------------------------------------------ #
 
-func cycle(val: int):
-	ICON = val % TYPES
+func cycle(icon: int):
+	ICON = icon % TYPES
 	if ICON < 0: ICON += TYPES
 	swap_anim(ICON)
-	redirect(ICON)
+	redirect()
 
-func redirect(val: int):
+func redirect():
 	if TEAM == TEAMS.BLACK:
-		if val > 1:
+		if ICON > 1:
 			orient_to(ORIENTATION + PI)
 		else: orient_to(0)

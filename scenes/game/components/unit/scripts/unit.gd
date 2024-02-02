@@ -24,8 +24,8 @@ const GROUPS := {
 # Member Senes
 @onready var AREA: CollisionShape2D = $Area
 @onready var ANIM: AnimatedSprite2D = $Anim
-@onready var KILL: AnimatedSprite2D = $Kill
-@onready var FILTERS: Node2D = $Filters
+@onready var DEATH: AnimatedSprite2D = $Death
+@onready var FILTER: ColorRect = $Filter
 @onready var MOVES: TileMap = $Moves
 
 
