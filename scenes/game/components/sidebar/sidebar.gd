@@ -47,7 +47,7 @@ func update_profiles():
 func profile_updated(id: int, width: int, data: PackedByteArray):
 
 	var profile := OWN
-	if id == P2P.ENEMY: profile = FOE
+	if id == P2P.ENEMY_ID: profile = FOE
 
 	if data.is_empty():
 		var user: String = ROOM.MEMBERS[id].USER
