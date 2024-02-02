@@ -24,6 +24,8 @@ var LOBBY_BUTT := preload('lobby_button/lobby_button.tscn')
 
 # Core Funtions -------------------------------------------------------------------------------- #
 
+## Connects the necessary [signal]s and
+## creates the [b]options[/b] for the [member HOST_TYPE] selection.
 func _ready():
 
 	SIGNALS.found_lobbies.connect(list_rooms)
@@ -35,7 +37,7 @@ func _ready():
 	HOST_TYPE.select(LOBBY.TYPE.PUBLIC)
 
 
-## Refocuses to [member HOST_NAME ] and initializes the rooms list.
+## Refocuses to button [member HOST_NAME] and initializes the rooms list.
 func _start():
 	HOST_NAME.grab_focus()
 	find_rooms()

@@ -6,18 +6,20 @@ const MODE = LOBBY.MODE.AUTO
 const TYPE = LOBBY.TYPE.INVISIBLE
 
 # Member Scenes
-@onready var Counter: Label = $%Counter
-@onready var Cancel: Button = $%Cancel
+@onready var COUNTER: Label = $%Counter
+@onready var CANCEL: Button = $%Cancel
 
 
 # Core Functions ------------------------------------------------------------- #
 
+## Initially disables the [method _process]
+## (or [member FindScreen.COUNTER]) operations.
 func _ready(): set_process(false)
 
 
 ## Starts matchmaking.
 func _start():
-	Cancel.grab_focus()
+	CANCEL.grab_focus()
 	SIGNALS.found_lobbies.connect(matchmaking)
 	SIGNALS.host_response.connect(_response)
 	SIGNALS.join_response.connect(_response)
@@ -56,9 +58,9 @@ var DIST := LOBBY.DIST.CLOSE
 var TIME := 0.0
 
 
-## Sets the text in the [i]mm:ss[/i] format for [member FindScreen.Counter].
+## Sets the text in the [i]mm:ss[/i] format for [member FindScreen.COUNTER].
 func set_counter(mins: int = 0, secs: int = 0):
-	Counter.text = '%02d : %02d' % [mins, secs]
+	COUNTER.text = '%02d : %02d' % [mins, secs]
 
 
 ## Increments [member FindScreen.TIME] and [member FindScreen.DIST].

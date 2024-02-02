@@ -19,4 +19,4 @@ func quit(): ROOT.quit()
 
 
 ## Refocuses
-func refocus(): $%Find.grab_focus()
+func refocus(): FIND.grab_focus()

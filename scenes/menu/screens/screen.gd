@@ -4,11 +4,10 @@ class_name Screen
 ## Note: Override the [method Screen._start] and [method Screen._reset] methods.
 
 
-# Core Functions (to override) ----------------------------------------------- #
+# Core Functions ------------------------------------------------------------- #
 
-# To override
-func _start(): pass
-func _reset(): pass
+func _start(): pass		## To be overridden.
+func _reset(): pass		## To be overridden.
 
 
 ## Emits a signal to the [Menu] that some error has occured,
