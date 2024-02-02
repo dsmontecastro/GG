@@ -10,7 +10,11 @@ const LAYER = 0		## ID of the relevant [TileMap] layer used.
 
 # Core Functions ------------------------------------------------------------- #
 
-func _ready(): pass
+## Connects the relevant [signal]s.
+func _ready():
+	SIGNALS.has_died.connect(kill_unit)
+
+
 func _start(): pass
 func _reset(): pass
 
@@ -32,7 +36,7 @@ func lighten(): set_layer_modulate(LAYER, COLORS.LITE)
 func darken(): set_layer_modulate(LAYER, COLORS.DARK)
 
 
-# Cell and Unit Management --------------------------------------------------- #
+# Grid Management ------------------------------------------------------------ #
 
 ## Edge-SPECS for the [TileMap].[br]
 ## Note that this indicates that the matrix has
@@ -62,26 +66,6 @@ func map_vector(cell: Vector2i, mode: MODE, value = null):
 	return map_cell(cell.x, cell.y, mode, value)
 
 
-## Checks if all cells are not occupied by a [Draggable].
-func is_cleared() -> bool:
-	for r in range(0, SPECS.x):
-		for c in range(0, SPECS.y):
-			var cell = map_cell(r, c, MODE.GET)
-			if cell: return false
-	return true
-
-
-## Clears all child [Unit]s and their matching cells in the [member Grid.GRID].
-func clear_units():
-	for unit: Unit in get_children():
-
-		var cell := local_to_map(unit.position)
-		map_vector(cell, MODE.SET, null)
-
-		remove_child(unit)
-		unit.queue_free()
-
-
 ## Resets all cells' data to [b]null[\b].
 func clear_cells():
 	for r in range(0, SPECS.x):
@@ -97,6 +81,24 @@ func update_cells():
 		var cell := local_to_map(unit.position)
 		map_vector(cell, MODE.SET, unit)
 	#print_grid('UPDATE')
+
+
+# Unit Management ------------------------------------------------------------ #
+
+## Clears a specific [Unit] from both the [member Grid.GRID] and program.
+func kill_unit(unit: Unit):
+
+	var cell := local_to_map(unit.position)
+	map_vector(cell, MODE.SET, null)
+
+	remove_child(unit)
+	unit.queue_free()
+	
+
+## Removes all child [Unit]s and their matching cells in the [member Grid.GRID].
+func clear_units():
+	for unit: Unit in get_children():
+		kill_unit(unit)
 	
 
 ## Snaps the given [param unit], if exists, to the given [param cell].[br]
@@ -121,7 +123,7 @@ func get_form() -> Array[Array]:
 	
 	var form: Array[Array] = []
 
-	for r in range(MIN.x, MIN.x + 1):
+	for r in range(MIN.x, MAX.x + 1):
 
 		var row: Array[int] = []
 		for c in range(MIN.y, MAX.y + 1):
@@ -132,7 +134,11 @@ func get_form() -> Array[Array]:
 			if unit: type = unit.TYPE
 
 			row.append(type)
+	
+		form.append(row)
 
+	print('[%s] Form:' % name)
+	print(form)
 	return form
 
 

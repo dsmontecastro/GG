@@ -30,309 +30,267 @@ tile_set = ExtResource("1_8grhk")
 format = 2
 layer_0/tile_data = PackedInt32Array(4, 65536, 0, 3, 65536, 0, 2, 65536, 0, 1, 65536, 0, 0, 65536, 0, 131074, 65536, 0, 131075, 65536, 0, 131076, 65536, 0, 131077, 65536, 0, 131078, 65536, 0, 131079, 65536, 0, 131080, 65536, 0, 131081, 65536, 0, 196617, 65536, 0, 196616, 65536, 0, 196615, 65536, 0, 196614, 65536, 0, 196613, 65536, 0, 196612, 65536, 0, 196611, 65536, 0, 196610, 65536, 0, 262146, 65536, 0, 262147, 65536, 0, 262148, 65536, 0, 262149, 65536, 0, 262150, 65536, 0, 262151, 65536, 0, 262152, 65536, 0, 262153, 65536, 0, 65536, 65536, 0, 131072, 65536, 0, 196608, 65536, 0, 262144, 65536, 0, 327680, 65536, 0, 393216, 65536, 0, 458752, 65536, 0, 524288, 65536, 0, 589824, 65536, 0, 262154, 65536, 0, 196618, 65536, 0, 131082, 65536, 0, 655360, 65536, 0, 5, 65536, 0, 6, 65536, 0, 7, 65536, 0, 8, 65536, 0, 9, 65536, 0, 10, 65536, 0)
 script = ExtResource("4_88xnc")
+SPECS = Vector2i(13, 12)
 MIN = Vector2i(2, 2)
 MAX = Vector2i(10, 4)
 
 [node name="01" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(975, 45)
 script = ExtResource("3_uqhs7")
 TYPE = 1
 TEAM = 1
 
 [node name="02A" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(885, 45)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = 1
 
 [node name="02B" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(795, 45)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = 1
 
 [node name="02C" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(705, 45)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = 1
 
 [node name="02D" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(615, 45)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = 1
 
 [node name="02E" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(525, 45)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = 1
 
 [node name="02F" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(435, 45)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = 1
 
 [node name="03" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(345, 45)
 script = ExtResource("3_uqhs7")
 TYPE = 3
 TEAM = 1
 
 [node name="04" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(255, 45)
 script = ExtResource("3_uqhs7")
 TYPE = 4
 TEAM = 1
 
 [node name="05" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(165, 45)
 script = ExtResource("3_uqhs7")
 TYPE = 5
 TEAM = 1
 
 [node name="06" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(75, 45)
 script = ExtResource("3_uqhs7")
 TYPE = 6
 TEAM = 1
 
 [node name="07" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(75, 135)
 script = ExtResource("3_uqhs7")
 TYPE = 7
 TEAM = 1
 
 [node name="08" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(75, 225)
 script = ExtResource("3_uqhs7")
 TYPE = 8
 TEAM = 1
 
 [node name="09" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(75, 315)
 script = ExtResource("3_uqhs7")
 TYPE = 9
 TEAM = 1
 
 [node name="10" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(75, 405)
 script = ExtResource("3_uqhs7")
 TYPE = 10
 TEAM = 1
 
 [node name="11" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(75, 495)
 script = ExtResource("3_uqhs7")
 TYPE = 11
 TEAM = 1
 
 [node name="12" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(75, 585)
 script = ExtResource("3_uqhs7")
 TYPE = 12
 TEAM = 1
 
 [node name="13" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(75, 675)
 script = ExtResource("3_uqhs7")
 TYPE = 13
 TEAM = 1
 
 [node name="14" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(75, 765)
 script = ExtResource("3_uqhs7")
 TYPE = 14
 TEAM = 1
 
 [node name="15A" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(75, 855)
 script = ExtResource("3_uqhs7")
 TYPE = 15
 TEAM = 1
 
 [node name="15B" parent="White" instance=ExtResource("2_lmxgd")]
-top_level = true
 position = Vector2(75, 945)
 script = ExtResource("3_uqhs7")
 TYPE = 15
 TEAM = 1
 
 [node name="Black" type="TileMap" parent="."]
-visible = false
-position = Vector2(1, 0)
 tile_set = ExtResource("1_8grhk")
 format = 2
 layer_0/tile_data = PackedInt32Array(458759, 65536, 0, 524297, 65536, 0, 524296, 65536, 0, 524293, 65536, 0, 524292, 65536, 0, 524291, 65536, 0, 589827, 65536, 0, 589828, 65536, 0, 589829, 65536, 0, 589830, 65536, 0, 589831, 65536, 0, 589832, 65536, 0, 589833, 65536, 0, 720898, 65536, 0, 720899, 65536, 0, 720900, 65536, 0, 720901, 65536, 0, 720902, 65536, 0, 720903, 65536, 0, 720904, 65536, 0, 720905, 65536, 0, 720906, 65536, 0, 720907, 65536, 0, 720908, 65536, 0, 655372, 65536, 0, 589836, 65536, 0, 524300, 65536, 0, 262156, 65536, 0, 196620, 65536, 0, 131084, 65536, 0, 589834, 65536, 0, 65548, 65536, 0, 589826, 65536, 0, 524290, 65536, 0, 458754, 65536, 0, 458755, 65536, 0, 458756, 65536, 0, 458757, 65536, 0, 458758, 65536, 0, 458760, 65536, 0, 458761, 65536, 0, 458762, 65536, 0, 524298, 65536, 0, 524295, 65536, 0, 524294, 65536, 0, 458764, 65536, 0, 393228, 65536, 0, 327692, 65536, 0)
 script = ExtResource("4_88xnc")
+SPECS = Vector2i(13, 12)
 MIN = Vector2i(2, 7)
 MAX = Vector2i(10, 9)
 
 [node name="01" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(254, 1035)
+position = Vector2(255, 1035)
 script = ExtResource("3_uqhs7")
 TYPE = 1
 TEAM = -1
 
 [node name="02A" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(344, 1035)
+position = Vector2(345, 1035)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = -1
 
 [node name="02B" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(434, 1035)
+position = Vector2(435, 1035)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = -1
 
 [node name="02C" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(524, 1035)
+position = Vector2(525, 1035)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = -1
 
 [node name="02D" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(614, 1035)
+position = Vector2(615, 1035)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = -1
 
 [node name="02E" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(704, 1035)
+position = Vector2(705, 1035)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = -1
 
 [node name="02F" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(794, 1035)
+position = Vector2(795, 1035)
 script = ExtResource("3_uqhs7")
 TYPE = 2
 TEAM = -1
 
 [node name="03" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(884, 1035)
+position = Vector2(885, 1035)
 script = ExtResource("3_uqhs7")
 TYPE = 3
 TEAM = -1
 
 [node name="04" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(974, 1035)
+position = Vector2(975, 1035)
 script = ExtResource("3_uqhs7")
 TYPE = 4
 TEAM = -1
 
 [node name="05" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1064, 1035)
+position = Vector2(1065, 1035)
 script = ExtResource("3_uqhs7")
 TYPE = 5
 TEAM = -1
 
 [node name="06" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1154, 1035)
+position = Vector2(1155, 1035)
 script = ExtResource("3_uqhs7")
 TYPE = 6
 TEAM = -1
 
 [node name="07" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1154, 945)
+position = Vector2(1155, 945)
 script = ExtResource("3_uqhs7")
 TYPE = 7
 TEAM = -1
 
 [node name="08" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1154, 855)
+position = Vector2(1155, 855)
 script = ExtResource("3_uqhs7")
 TYPE = 8
 TEAM = -1
 
 [node name="09" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1154, 765)
+position = Vector2(1155, 765)
 script = ExtResource("3_uqhs7")
 TYPE = 9
 TEAM = -1
 
 [node name="10" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1154, 675)
+position = Vector2(1155, 675)
 script = ExtResource("3_uqhs7")
 TYPE = 10
 TEAM = -1
 
 [node name="11" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1154, 585)
+position = Vector2(1155, 585)
 script = ExtResource("3_uqhs7")
 TYPE = 11
 TEAM = -1
 
 [node name="12" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1154, 495)
+position = Vector2(1155, 495)
 script = ExtResource("3_uqhs7")
 TYPE = 12
 TEAM = -1
 
 [node name="13" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1154, 405)
+position = Vector2(1155, 405)
 script = ExtResource("3_uqhs7")
 TYPE = 13
 TEAM = -1
 
 [node name="14" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1154, 315)
+position = Vector2(1155, 315)
 script = ExtResource("3_uqhs7")
 TYPE = 14
 TEAM = -1
 
 [node name="15A" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1154, 225)
+position = Vector2(1155, 225)
 script = ExtResource("3_uqhs7")
 TYPE = 15
 TEAM = -1
 
 [node name="15B" parent="Black" instance=ExtResource("2_lmxgd")]
-top_level = true
-position = Vector2(1154, 135)
+position = Vector2(1155, 135)
 script = ExtResource("3_uqhs7")
 TYPE = 15
 TEAM = -1

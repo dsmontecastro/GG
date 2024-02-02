@@ -62,15 +62,17 @@ func clear_enemies():
 ## using [method Unit.copy] to clone its attributes.
 func make_ally(unit: Unit):
 
+	print('Creating ally from %s...' % unit.name)
+
 	var ally := UNIT.instantiate()
 	ally.set_script(ALLY)
 	add_child(ally)
 
-	#ally.copy(unit)
-
 	var cell := local_to_map(unit.position)
 	snap_to(cell, ally)
 	ally.copy(unit)
+
+	print('Created %s at %v' % [ ally.name, cell ])
 
 
 ## Creates and places [Enemy] [Unit]s given the supplied parameters.
@@ -78,8 +80,9 @@ func make_enemy(cell: Vector2i, type: int, team: Unit.TEAMS):
 
 	var enemy := UNIT.instantiate()
 	enemy.set_script(ENEMY)
-	enemy.set_team(team)
-	enemy.set_type(type)
+	enemy.init(type, team)
+	#enemy.set_team(team)
+	#enemy.set_type(0)
 
 	add_child(enemy)
 	snap_to(cell, enemy)
@@ -97,6 +100,8 @@ func form_enemies():
 
 	var team := Unit.TEAMS.BLACK
 	if USER.HOSTING: team = Unit.TEAMS.WHITE
+
+	print(team)
 	
 	#for r in range(form.size()):
 		#var row := form[r]

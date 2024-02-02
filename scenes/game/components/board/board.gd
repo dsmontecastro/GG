@@ -54,19 +54,8 @@ func _setup(val: bool):
 
 	print('READYING: %s' % val)
 
-	#if val and OWN.is_cleared():
-	if val:
-
-		for child: Draggable in OWN.get_children():
-			FIELD.make_ally(child)
-		FIELD.update_cells()
-
-		var form := FIELD.get_form()
-		LOBBY.setup(form)
-
-	else:
-		FIELD.clear_units()
-		SIGNALS.game_readied.emit(false)
+	#if val: create_formation()
+	if val: pass
 
 
 ## [TODO] Unsure
@@ -80,6 +69,25 @@ func user_update(_id: int, _flag: int): pass
 
 
 func create_formation():
-	for child: Draggable in OWN.get_children():
-		FIELD.make_ally(child)
-	FIELD.update_cells()
+
+	if OWN.is_cleared():
+
+		var base = OWN.get_form()
+		
+		for r in base.size():
+			var row = base[r]
+			for c in row.size():
+				if row[c]:
+					FIELD.make_ally(row[c])
+		FIELD.update_cells()
+
+		var form := FIELD.get_form()
+		LOBBY.setup(form)
+
+	else:
+		FIELD.clear_units()
+		SIGNALS.game_setup.emit(false)
+
+	#for child: Draggable in OWN.get_children():
+		#FIELD.make_ally(child)
+	#FIELD.update_cells()
